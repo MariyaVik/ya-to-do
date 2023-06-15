@@ -20,7 +20,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   bool hasDeadline = false;
   late TextEditingController textController;
 
-  DateTime deadLine = DateTime.now().add(const Duration(days: 1));
+  DateTime? deadLine; // = DateTime.now().add(const Duration(days: 1));
   Importance importance = Importance.none;
 
   Task? task;
@@ -29,7 +29,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     return showDatePicker(
         context: context,
         locale: const Locale('ru'),
-        initialDate: deadLine,
+        initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 365)));
   }
@@ -147,7 +147,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               setState(() {});
                             },
                             child: Text(
-                              getDateString(deadLine),
+                              getDateString(deadLine!),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -166,6 +166,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           if (hasDeadline) {
                             deadLine =
                                 await selectDeadLine(context) ?? deadLine;
+                            hasDeadline = deadLine != null;
                             task!.deadline = deadLine;
                           } else {
                             task!.deadline = null;

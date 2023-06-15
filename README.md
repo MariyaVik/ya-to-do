@@ -1,16 +1,19 @@
-# ya_to_do
+# Список дел
 
-A new Flutter project.
+### Реализовано
+* вёрстка 2-х экранов по макету
+* фильтрация задач (все/невыполненные)
+* свайпы по задаче:
+    + вправо - изменить готовность
+    + влево - удалить
+* иконка и название приложения
 
-## Getting Started
+### Скриншоты
 
-This project is a starting point for a Flutter application.
+<img src="assets\screenshots\empty_list.jpg">
+<img src="assets\screenshots\add_task.jpg">
+<img src="assets\screenshots\compressed_header.jpg">
+<img src="assets\screenshots\only_undone.jpg">
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Ссылка на .apk
+https://drive.google.com/file/d/1zU_LpnFPbcRZEqb6hIKndZqMaHuutbNI/view?usp=sharing
