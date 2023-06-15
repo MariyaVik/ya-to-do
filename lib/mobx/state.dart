@@ -12,24 +12,24 @@ class AppState = _AppState with _$AppState;
 
 abstract class _AppState with Store {
   @observable
-  ObservableList<Task> tasks = ObservableList.of([
-    // Task(
-    //     id: 1,
-    //     text: 'Что-то необходимое',
-    //     importance: Importance.none,
-    //     isDone: true),
-    // Task(
-    //     id: 2,
-    //     text: 'И ещё',
-    //     importance: Importance.low,
-    //     deadline: DateTime.now()),
-    // Task(
-    //     id: 3,
-    //     text:
-    //         'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
-    //     importance: Importance.hight),
-  ]);
-  // ObservableList<Task> tasks = ObservableList.of([]);
+  ObservableList<Task> tasks = ObservableList.of([]);
+  // ObservableList<Task> tasks = ObservableList.of([
+  //   Task(
+  //       id: 1,
+  //       text: 'Что-то необходимое',
+  //       importance: Importance.none,
+  //       isDone: true),
+  //   Task(
+  //       id: 2,
+  //       text: 'И ещё',
+  //       importance: Importance.low,
+  //       deadline: DateTime.now()),
+  //   Task(
+  //       id: 3,
+  //       text:
+  //           'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
+  //       importance: Importance.hight),
+  // ]);
 
   int? currentId;
   Task? currentTask;
@@ -48,14 +48,17 @@ abstract class _AppState with Store {
   int get lastId => tasks.isEmpty ? 0 : tasks.last.id;
 
   @action
-  void addTask(Task task) => tasks.add(task);
+  void addTask(Task task) {
+    tasks.add(task);
+    log('ДОБАВИЛИ задачу c id ${task.id}');
+  }
 
   @action
   void removeTask(int id) {
     tasks.remove(tasks.where((element) => element.id == id).first);
     currentId = null;
     currentTask = null;
-    log('УДАЛИЛИ задачу');
+    log('УДАЛИЛИ задачу c id $id');
   }
 
   @action
@@ -72,7 +75,7 @@ abstract class _AppState with Store {
     ]);
     currentId = null;
     currentTask = null;
-    log('ИЗМЕНИЛИ задачу');
+    log('ИЗМЕНИЛИ задачу c id $id');
   }
 
   @action
@@ -85,6 +88,6 @@ abstract class _AppState with Store {
         else
           tasks[i].copyWith(isDone: !tasks[index].isDone)
     ]);
-    log('ИЗМЕНИЛИ выполнение');
+    log('ИЗМЕНИЛИ выполнение задачи c id $id ');
   }
 }

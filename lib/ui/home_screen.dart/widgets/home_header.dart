@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +65,7 @@ class HomeHeader extends StatelessWidget {
                               Filter.all
                           ? Filter.undone
                           : Filter.all;
+                  log('ФИЛЬТР ИЗМЕНЁН НА ${Provider.of<AppState>(context, listen: false).currentFilter.name}');
                 },
               );
             }),

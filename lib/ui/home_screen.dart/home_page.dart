@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -34,6 +35,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    dev.log('HOME [BUILD]');
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
@@ -84,6 +86,8 @@ class HomePage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            dev.log('GO TO ADDTASK');
+
             Navigator.of(context).pushNamed(AppNavRouteName.addTask);
           },
           child: const Icon(Icons.add),

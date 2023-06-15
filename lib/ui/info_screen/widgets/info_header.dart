@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +22,7 @@ class InfoHeader extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {
+                      log('BACK TO HOME');
                       Navigator.of(context).pop();
                     },
                     icon: const Icon(Icons.close)),
@@ -39,6 +42,7 @@ class InfoHeader extends StatelessWidget {
                               actions: [
                                 TextButton(
                                     onPressed: () {
+                                      log('BACK TO ADDTASK');
                                       Navigator.of(context).pop();
                                     },
                                     child: Text('Понятно'.toUpperCase()))
@@ -57,6 +61,7 @@ class InfoHeader extends StatelessWidget {
                           Provider.of<AppState>(context, listen: false)
                               .addTask(task);
                         }
+                        log('BACK TO HOME');
                         Navigator.of(context).pop();
                       }
                     },

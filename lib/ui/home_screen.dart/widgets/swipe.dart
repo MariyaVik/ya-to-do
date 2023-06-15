@@ -18,7 +18,6 @@ class _MySwipeState extends State<MySwipe> {
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey<int>(widget.id),
-      onResize: () {},
       secondaryBackground: Container(
         color: Theme.of(context).colorScheme.error,
         child: Stack(

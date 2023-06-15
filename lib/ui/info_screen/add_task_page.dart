@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +22,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   bool hasDeadline = false;
   late TextEditingController textController;
 
-  DateTime? deadLine; // = DateTime.now().add(const Duration(days: 1));
+  DateTime? deadLine;
   Importance importance = Importance.none;
 
   Task? task;
@@ -37,6 +39,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   void initState() {
     super.initState();
+    log('ADDTASK [INIT]');
     textController = TextEditingController();
     if (widget.id != null) {
       Provider.of<AppState>(context, listen: false).currentId = widget.id;
@@ -61,7 +64,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   @override
+  void dispose() {
+    log('ADDTASK [DISPOSE]');
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    log('ADDTASK [BUILD]');
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
@@ -187,6 +197,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     : () {
                         Provider.of<AppState>(context, listen: false)
                             .removeTask(widget.id!);
+                        log('BACK TO HOME');
                         Navigator.of(context).pop();
                       },
                 style: TextButton.styleFrom(

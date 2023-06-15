@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ya_to_do/entities/importance.dart';
@@ -29,6 +31,7 @@ class TaskListTile extends StatelessWidget {
       ),
       trailing: IconButton(
           onPressed: () {
+            log('GO TO EDITTASK id ${tasks[index].id}');
             Navigator.of(context)
                 .pushNamed(AppNavRouteName.addTask, arguments: tasks[index].id);
           },
