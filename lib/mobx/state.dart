@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import '../entities/filter.dart';
@@ -12,24 +13,57 @@ class AppState = _AppState with _$AppState;
 
 abstract class _AppState with Store {
   @observable
-  ObservableList<Task> tasks = ObservableList.of([]);
-  // ObservableList<Task> tasks = ObservableList.of([
-  //   Task(
-  //       id: 1,
-  //       text: 'Что-то необходимое',
-  //       importance: Importance.none,
-  //       isDone: true),
-  //   Task(
-  //       id: 2,
-  //       text: 'И ещё',
-  //       importance: Importance.low,
-  //       deadline: DateTime.now()),
-  //   Task(
-  //       id: 3,
-  //       text:
-  //           'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
-  //       importance: Importance.hight),
-  // ]);
+  Locale currentLocale = const Locale('ru');
+
+  @observable
+  // ObservableList<Task> tasks = ObservableList.of([]);
+  ObservableList<Task> tasks = ObservableList.of([
+    Task(
+        id: 1,
+        text: 'Что-то необходимое',
+        importance: Importance.none,
+        isDone: true),
+    Task(
+        id: 2,
+        text: 'И ещё',
+        importance: Importance.low,
+        deadline: DateTime.now()),
+    Task(
+        id: 3,
+        text:
+            'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
+        importance: Importance.hight),
+    Task(
+        id: 1,
+        text: 'Что-то необходимое',
+        importance: Importance.none,
+        isDone: true),
+    Task(
+        id: 2,
+        text: 'И ещё',
+        importance: Importance.low,
+        deadline: DateTime.now()),
+    Task(
+        id: 3,
+        text:
+            'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
+        importance: Importance.hight),
+    Task(
+        id: 1,
+        text: 'Что-то необходимое',
+        importance: Importance.none,
+        isDone: true),
+    Task(
+        id: 2,
+        text: 'И ещё',
+        importance: Importance.low,
+        deadline: DateTime.now()),
+    Task(
+        id: 3,
+        text:
+            'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
+        importance: Importance.hight),
+  ]);
 
   int? currentId;
   Task? currentTask;
@@ -89,5 +123,10 @@ abstract class _AppState with Store {
           tasks[i].copyWith(isDone: !tasks[index].isDone)
     ]);
     log('ИЗМЕНИЛИ выполнение задачи c id $id ');
+  }
+
+  @action
+  changeLocale(Locale newLocale) {
+    currentLocale = newLocale;
   }
 }

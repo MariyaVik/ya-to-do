@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:ya_to_do/ui/navigation/route_name.dart';
 
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
       },
       leading: const Icon(Icons.add, color: Colors.transparent),
       title: Text(
-        'Новое',
+        AppLocalizations.of(context).new_task,
         style: Theme.of(context)
             .textTheme
             .bodyMedium!
@@ -51,13 +52,16 @@ class HomePage extends StatelessWidget {
                   ? Provider.of<AppState>(context).tasks
                   : Provider.of<AppState>(context).undoneTasks;
               return filterAll && tasks.isEmpty
-                  ? const SliverFillRemaining(
+                  ? SliverFillRemaining(
                       hasScrollBody: false,
-                      child: Center(child: Text('Задач нет')))
+                      child: Center(
+                          child: Text(AppLocalizations.of(context).no_tasks)))
                   : !filterAll && tasks.isEmpty
-                      ? const SliverFillRemaining(
+                      ? SliverFillRemaining(
                           hasScrollBody: false,
-                          child: Center(child: Text('Все задачи выполнены')))
+                          child: Center(
+                              child: Text(AppLocalizations.of(context)
+                                  .no_undone_tasks)))
                       : SliverToBoxAdapter(
                           child: Container(
                             clipBehavior: Clip.hardEdge,

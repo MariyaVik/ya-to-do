@@ -1,0 +1,20 @@
+{
+    "app_title": "To-do list",
+    "title": "My to-do",
+    "done": "Done",
+    "no_tasks": "No tasks",
+    "no_undone_tasks": "All tasks completed",
+    "save": "Save",
+    "delete": "Delete",
+    "importance": "Importance",
+    "do_until": "Do until",
+    "what_do": "What need to do",
+    "importance_no": "No",
+    "importance_low": "Low",
+    "importance_high": "High",
+    "warning_description": "Enter a description of the task",
+    "ok": "OK",
+    "new_task": "New",
+    "language": "English",
+    "language_en": "English"
+}

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../common/utils.dart';
 import '../../entities/importance.dart';
@@ -30,7 +32,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Future<DateTime?> selectDeadLine(BuildContext context) {
     return showDatePicker(
         context: context,
-        locale: const Locale('ru'),
+        locale: Provider.of<AppState>(context, listen: false).currentLocale,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(const Duration(days: 365)));
@@ -72,6 +74,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     log('ADDTASK [BUILD]');
+    List<String> importanceName = [
+      AppLocalizations.of(context).importance_no,
+      AppLocalizations.of(context).importance_low,
+      '!! ${AppLocalizations.of(context).importance_high}'
+    ];
     return SafeArea(
       child: Scaffold(
         body: CustomScrollView(
@@ -98,13 +105,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     },
                     minLines: 3,
                     maxLines: null,
-                    decoration: const InputDecoration(
-                      hintText: 'Что надо сделать…',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context).what_do,
                     ),
                   ),
                 ),
                 const SizedBox(height: 28),
-                const Text('Важность'),
+                Text(AppLocalizations.of(context).importance),
                 DropdownButton<Importance>(
                   value: importance,
                   iconSize: 0.0,
@@ -147,7 +154,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Сделать до'),
+                        Text(AppLocalizations.of(context).do_until),
                         if (hasDeadline)
                           GestureDetector(
                             onTap: () async {
@@ -157,7 +164,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               setState(() {});
                             },
                             child: Text(
-                              getDateString(deadLine!),
+                              DateFormat(
+                                      'd MMMM yyyy',
+                                      Provider.of<AppState>(context,
+                                              listen: false)
+                                          .currentLocale
+                                          .languageCode)
+                                  .format(deadLine!),
+                              // getDateString(context, deadLine!),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -203,7 +217,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.error),
                 child: Row(
-                  children: const [Icon(Icons.delete), Text('Удалить')],
+                  children: [
+                    const Icon(Icons.delete),
+                    Text(AppLocalizations.of(context).delete)
+                  ],
                 ),
               )
             ])),

@@ -29,6 +29,22 @@ mixin _$AppState on _AppState, Store {
           Computed<int>(() => super.lastId, name: '_AppState.lastId'))
       .value;
 
+  late final _$currentLocaleAtom =
+      Atom(name: '_AppState.currentLocale', context: context);
+
+  @override
+  Locale get currentLocale {
+    _$currentLocaleAtom.reportRead();
+    return super.currentLocale;
+  }
+
+  @override
+  set currentLocale(Locale value) {
+    _$currentLocaleAtom.reportWrite(value, super.currentLocale, () {
+      super.currentLocale = value;
+    });
+  }
+
   late final _$tasksAtom = Atom(name: '_AppState.tasks', context: context);
 
   @override
@@ -112,8 +128,20 @@ mixin _$AppState on _AppState, Store {
   }
 
   @override
+  dynamic changeLocale(Locale newLocale) {
+    final _$actionInfo =
+        _$_AppStateActionController.startAction(name: '_AppState.changeLocale');
+    try {
+      return super.changeLocale(newLocale);
+    } finally {
+      _$_AppStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+currentLocale: ${currentLocale},
 tasks: ${tasks},
 currentFilter: ${currentFilter},
 doneCount: ${doneCount},

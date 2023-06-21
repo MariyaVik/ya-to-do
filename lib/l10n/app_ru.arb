@@ -1,0 +1,20 @@
+{
+    "app_title": "Список дел",
+    "title": "Мои дела",
+    "done": "Выполнено",
+    "no_tasks": "Задач нет",
+    "no_undone_tasks": "Все задачи выполнены",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "importance": "Важность",
+    "do_until": "Сделать до",
+    "what_do": "Что нужно сделать",
+    "importance_no": "Нет",
+    "importance_low": "Низкий",
+    "importance_high": "Высокий",
+    "warning_description": "Введите описание задачи",
+    "ok": "Понятно",
+    "new_task": "Новое",
+    "language": "Русский",
+    "language_en": "Russian"
+}
