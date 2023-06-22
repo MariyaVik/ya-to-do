@@ -14,7 +14,7 @@ import 'widgets/info_header.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key, this.id});
-  final int? id;
+  final String? id;
 
   @override
   State<AddTaskPage> createState() => _AddTaskPageState();
@@ -55,12 +55,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
         if (hasDeadline) {
           deadLine = task!.deadline!;
         }
-        importance = task!.importance ?? importance;
+        importance = task!.importance;
       }
     } else {
       Provider.of<AppState>(context, listen: false).currentTask = Task(
-          id: Provider.of<AppState>(context, listen: false).lastId + 1,
-          text: '');
+        id: (DateTime.now().microsecondsSinceEpoch).toString(),
+        text: '',
+        createdAt: DateTime.now(),
+        changedAt: DateTime.now(),
+        lastUpdatedBy:
+            Provider.of<AppState>(context, listen: false).deviceId ?? '',
+      );
       task = Provider.of<AppState>(context, listen: false).currentTask;
     }
   }

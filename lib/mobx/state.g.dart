@@ -22,12 +22,6 @@ mixin _$AppState on _AppState, Store {
           Computed<ObservableList<Task>>(() => super.undoneTasks,
               name: '_AppState.undoneTasks'))
       .value;
-  Computed<int>? _$lastIdComputed;
-
-  @override
-  int get lastId => (_$lastIdComputed ??=
-          Computed<int>(() => super.lastId, name: '_AppState.lastId'))
-      .value;
 
   late final _$currentLocaleAtom =
       Atom(name: '_AppState.currentLocale', context: context);
@@ -76,6 +70,22 @@ mixin _$AppState on _AppState, Store {
     });
   }
 
+  late final _$loadAllTodosAsyncAction =
+      AsyncAction('_AppState.loadAllTodos', context: context);
+
+  @override
+  Future<void> loadAllTodos() {
+    return _$loadAllTodosAsyncAction.run(() => super.loadAllTodos());
+  }
+
+  late final _$getDeviceIdAsyncAction =
+      AsyncAction('_AppState.getDeviceId', context: context);
+
+  @override
+  Future<void> getDeviceId() {
+    return _$getDeviceIdAsyncAction.run(() => super.getDeviceId());
+  }
+
   late final _$_AppStateActionController =
       ActionController(name: '_AppState', context: context);
 
@@ -91,7 +101,7 @@ mixin _$AppState on _AppState, Store {
   }
 
   @override
-  void removeTask(int id) {
+  void removeTask(String id) {
     final _$actionInfo =
         _$_AppStateActionController.startAction(name: '_AppState.removeTask');
     try {
@@ -102,7 +112,7 @@ mixin _$AppState on _AppState, Store {
   }
 
   @override
-  void editTask(int id,
+  void editTask(String id,
       {String? newText, Importance? newImportance, DateTime? newDeadline}) {
     final _$actionInfo =
         _$_AppStateActionController.startAction(name: '_AppState.editTask');
@@ -117,7 +127,7 @@ mixin _$AppState on _AppState, Store {
   }
 
   @override
-  void toggleDone(int id) {
+  void toggleDone(String id) {
     final _$actionInfo =
         _$_AppStateActionController.startAction(name: '_AppState.toggleDone');
     try {
@@ -145,8 +155,7 @@ currentLocale: ${currentLocale},
 tasks: ${tasks},
 currentFilter: ${currentFilter},
 doneCount: ${doneCount},
-undoneTasks: ${undoneTasks},
-lastId: ${lastId}
+undoneTasks: ${undoneTasks}
     ''';
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ya_to_do/ui/navigation/main_navigation.dart';
 
 import '../mobx/state.dart';
+import '../services/client_api.dart';
 import 'theme/theme_light.dart';
 
 class App extends StatelessWidget {
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => AppState()),
+        Provider(create: (context) => AppState(ClientAPI.instance)),
       ],
       child: Observer(builder: (context) {
         return MaterialApp(

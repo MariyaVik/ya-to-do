@@ -75,7 +75,7 @@ class HomePage extends StatelessWidget {
                                 ...List.generate(
                                   tasks.length,
                                   (index) {
-                                    int i = tasks[index].id;
+                                    String i = tasks[index].id;
                                     return MySwipe(
                                         id: i, child: TaskListTile(id: i));
                                   },

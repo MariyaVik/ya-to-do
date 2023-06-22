@@ -13,7 +13,7 @@ import 'check_box_custom.dart';
 class TaskListTile extends StatelessWidget {
   const TaskListTile({super.key, required this.id});
 
-  final int id;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TaskListTile extends StatelessWidget {
         onChanged: (val) {
           Provider.of<AppState>(context, listen: false).toggleDone(id);
         },
-        importance: tasks[index].importance!,
+        importance: tasks[index].importance,
       ),
       trailing: IconButton(
           onPressed: () {

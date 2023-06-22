@@ -15,6 +15,8 @@ dependencies:
   mobx: 
   flutter_mobx:
   provider:
+  dio:
+  device_info_plus: ^3.2.3
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

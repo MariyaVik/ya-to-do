@@ -6,66 +6,30 @@ import 'package:mobx/mobx.dart';
 import '../entities/filter.dart';
 import '../entities/importance.dart';
 import '../entities/task.dart';
+import '../services/client_api.dart';
+import '../services/device_info.dart';
 
 part 'state.g.dart';
 
 class AppState = _AppState with _$AppState;
 
 abstract class _AppState with Store {
+  final ClientAPI rep;
+  _AppState(this.rep) {
+    loadAllTodos();
+    getDeviceId();
+  }
+
   @observable
   Locale currentLocale = const Locale('ru');
 
-  @observable
-  // ObservableList<Task> tasks = ObservableList.of([]);
-  ObservableList<Task> tasks = ObservableList.of([
-    Task(
-        id: 1,
-        text: 'Что-то необходимое',
-        importance: Importance.none,
-        isDone: true),
-    Task(
-        id: 2,
-        text: 'И ещё',
-        importance: Importance.low,
-        deadline: DateTime.now()),
-    Task(
-        id: 3,
-        text:
-            'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
-        importance: Importance.hight),
-    Task(
-        id: 1,
-        text: 'Что-то необходимое',
-        importance: Importance.none,
-        isDone: true),
-    Task(
-        id: 2,
-        text: 'И ещё',
-        importance: Importance.low,
-        deadline: DateTime.now()),
-    Task(
-        id: 3,
-        text:
-            'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
-        importance: Importance.hight),
-    Task(
-        id: 1,
-        text: 'Что-то необходимое',
-        importance: Importance.none,
-        isDone: true),
-    Task(
-        id: 2,
-        text: 'И ещё',
-        importance: Importance.low,
-        deadline: DateTime.now()),
-    Task(
-        id: 3,
-        text:
-            'А это что-то оооочень длинное вот прям очень и наверное что-то важное ',
-        importance: Importance.hight),
-  ]);
+  String? deviceId = '';
+  int revision = 0;
 
-  int? currentId;
+  @observable
+  ObservableList<Task> tasks = ObservableList.of([]);
+
+  String? currentId;
   Task? currentTask;
 
   @observable
@@ -78,26 +42,29 @@ abstract class _AppState with Store {
   ObservableList<Task> get undoneTasks =>
       ObservableList.of(tasks.where((element) => element.isDone == false));
 
-  @computed
-  int get lastId => tasks.isEmpty ? 0 : tasks.last.id;
-
   @action
-  void addTask(Task task) {
+  void addTask(Task task) async {
     tasks.add(task);
     log('ДОБАВИЛИ задачу c id ${task.id}');
+    revision = await rep.addTask(task, revision);
   }
 
   @action
-  void removeTask(int id) {
+  void removeTask(String id) async {
     tasks.remove(tasks.where((element) => element.id == id).first);
     currentId = null;
     currentTask = null;
     log('УДАЛИЛИ задачу c id $id');
+    revision = await rep.deleteTask(id, revision);
   }
 
   @action
-  void editTask(int id,
-      {String? newText, Importance? newImportance, DateTime? newDeadline}) {
+  void editTask(
+    String id, {
+    String? newText,
+    Importance? newImportance,
+    DateTime? newDeadline,
+  }) async {
     int index = tasks.indexOf(tasks.where((element) => element.id == id).first);
     tasks = ObservableList.of([
       for (int i = 0; i < tasks.length; i++)
@@ -110,10 +77,12 @@ abstract class _AppState with Store {
     currentId = null;
     currentTask = null;
     log('ИЗМЕНИЛИ задачу c id $id');
+    Task task = tasks[index];
+    revision = await rep.editTask(task, revision);
   }
 
   @action
-  void toggleDone(int id) {
+  void toggleDone(String id) async {
     int index = tasks.indexOf(tasks.where((element) => element.id == id).first);
     tasks = ObservableList.of([
       for (int i = 0; i < tasks.length; i++)
@@ -123,10 +92,26 @@ abstract class _AppState with Store {
           tasks[i].copyWith(isDone: !tasks[index].isDone)
     ]);
     log('ИЗМЕНИЛИ выполнение задачи c id $id ');
+    Task task = tasks[index];
+    revision = await rep.editTask(task, revision);
   }
 
   @action
   changeLocale(Locale newLocale) {
     currentLocale = newLocale;
+  }
+
+  @action
+  Future<void> loadAllTodos() async {
+    var data = await rep.getTodos();
+    revision = data['revision'];
+    tasks = ObservableList<Task>.of(
+        data['list']?.map<Task>((e) => Task.fromJson(e)).toList());
+  }
+
+  @action
+  Future<void> getDeviceId() async {
+    deviceId = await DeviceInfo.getDeviceId();
+    log('ID УСТРОЙСТВА $deviceId');
   }
 }

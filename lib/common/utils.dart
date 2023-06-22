@@ -11,7 +11,7 @@ double normalizationDouble(
   return ((number - oldMin) * newRange / oldRange) + newMin;
 }
 
-Task getTaskById(BuildContext context, int id) {
+Task getTaskById(BuildContext context, String id) {
   return Provider.of<AppState>(context, listen: false)
       .tasks
       .where((element) => element.id == id)
