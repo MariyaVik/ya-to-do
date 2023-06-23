@@ -16,13 +16,17 @@ dependencies:
   flutter_mobx:
   provider:
   dio:
-  device_info_plus: ^3.2.3
+  device_info_plus: ^9.0.2
+  isar: 3.1.0+1
+  isar_flutter_libs: 3.1.0+1
+  path_provider:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
+  isar_generator: 3.1.0+1
   json_serializable: ^6.1.4
   mobx_codegen:
   flutter_lints: ^2.0.0

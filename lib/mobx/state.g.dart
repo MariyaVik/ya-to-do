@@ -70,6 +70,42 @@ mixin _$AppState on _AppState, Store {
     });
   }
 
+  late final _$addTaskAsyncAction =
+      AsyncAction('_AppState.addTask', context: context);
+
+  @override
+  Future<void> addTask(Task task) {
+    return _$addTaskAsyncAction.run(() => super.addTask(task));
+  }
+
+  late final _$removeTaskAsyncAction =
+      AsyncAction('_AppState.removeTask', context: context);
+
+  @override
+  Future<void> removeTask(String id) {
+    return _$removeTaskAsyncAction.run(() => super.removeTask(id));
+  }
+
+  late final _$editTaskAsyncAction =
+      AsyncAction('_AppState.editTask', context: context);
+
+  @override
+  Future<void> editTask(String id,
+      {String? newText, Importance? newImportance, DateTime? newDeadline}) {
+    return _$editTaskAsyncAction.run(() => super.editTask(id,
+        newText: newText,
+        newImportance: newImportance,
+        newDeadline: newDeadline));
+  }
+
+  late final _$toggleDoneAsyncAction =
+      AsyncAction('_AppState.toggleDone', context: context);
+
+  @override
+  Future<void> toggleDone(String id) {
+    return _$toggleDoneAsyncAction.run(() => super.toggleDone(id));
+  }
+
   late final _$loadAllTodosAsyncAction =
       AsyncAction('_AppState.loadAllTodos', context: context);
 
@@ -88,54 +124,6 @@ mixin _$AppState on _AppState, Store {
 
   late final _$_AppStateActionController =
       ActionController(name: '_AppState', context: context);
-
-  @override
-  void addTask(Task task) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.addTask');
-    try {
-      return super.addTask(task);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removeTask(String id) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.removeTask');
-    try {
-      return super.removeTask(id);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void editTask(String id,
-      {String? newText, Importance? newImportance, DateTime? newDeadline}) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.editTask');
-    try {
-      return super.editTask(id,
-          newText: newText,
-          newImportance: newImportance,
-          newDeadline: newDeadline);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void toggleDone(String id) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.toggleDone');
-    try {
-      return super.toggleDone(id);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   dynamic changeLocale(Locale newLocale) {

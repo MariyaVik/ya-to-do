@@ -10,7 +10,7 @@ abstract class DeviceInfo {
       return iosDeviceInfo.identifierForVendor;
     } else if (Platform.isAndroid) {
       var androidDeviceInfo = await deviceInfo.androidInfo;
-      return androidDeviceInfo.androidId;
+      return androidDeviceInfo.id;
     }
     return null;
   }

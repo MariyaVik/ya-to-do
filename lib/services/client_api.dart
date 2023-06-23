@@ -21,8 +21,13 @@ class ClientAPI {
       'Authorization': 'Bearer $token',
     };
     Options options = Options(headers: headers);
-    var response = await _dio.get(url, options: options);
-    return response.data;
+    try {
+      log('загружаем все задача');
+      var response = await _dio.get(url, options: options);
+      return response.data;
+    } on DioException catch (e) {
+      throw 'Something went wrong :(\n ${e.message}';
+    }
   }
 
   Future<int> addTask(Task task, int revision) async {
@@ -38,6 +43,7 @@ class ClientAPI {
       "element": jsonTask,
     };
     try {
+      log('добавляем задачу');
       var response = await _dio.post(url, options: options, data: data);
       log('ДОБАВИЛИ задачу c id ${task.id} на сервер');
       return response.data['revision'];
@@ -56,6 +62,7 @@ class ClientAPI {
     Options options = Options(headers: headers);
 
     try {
+      log('удаляем задачу');
       var response = await _dio.delete(url, options: options);
       log('УДАЛИЛИ задачу c id $taskId с сервера');
       return response.data['revision'];
@@ -77,9 +84,27 @@ class ClientAPI {
       "element": jsonTask,
     };
     try {
+      log('изменяем задачу');
       var response = await _dio.put(url, options: options, data: data);
       log('ИЗМЕНИЛИ задачу с id ${task.id} на сервере');
       return response.data['revision'];
+    } on DioException catch (e) {
+      throw 'Something went wrong :(\n ${e.message}';
+    }
+  }
+
+  Future<Map<String, dynamic>> updateData(int revision) async {
+    String url = ApiUrls.baseUrl + ApiUrls.listUrl;
+    Map<String, dynamic> headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+      'X-Last-Known-Revision': revision,
+    };
+    Options options = Options(headers: headers);
+    try {
+      log('загружаем все задача');
+      var response = await _dio.patch(url, options: options);
+      return response.data;
     } on DioException catch (e) {
       throw 'Something went wrong :(\n ${e.message}';
     }
