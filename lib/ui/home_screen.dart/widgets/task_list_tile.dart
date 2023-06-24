@@ -7,7 +7,7 @@ import 'package:ya_to_do/entities/importance.dart';
 
 import '../../../common/utils.dart';
 import '../../../mobx/state.dart';
-import '../../navigation/route_name.dart';
+import '../../../common/navigation/route_name.dart';
 import 'check_box_custom.dart';
 
 class TaskListTile extends StatelessWidget {
@@ -18,7 +18,7 @@ class TaskListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tasks = Provider.of<AppState>(context).tasks;
-    int index = tasks.indexOf(getTaskById(context, id));
+    int index = tasks.indexOf(context.getTaskById(id));
     return ListTile(
       onTap: () {
         Provider.of<AppState>(context, listen: false).toggleDone(id);

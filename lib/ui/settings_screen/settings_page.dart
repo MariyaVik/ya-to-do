@@ -60,7 +60,7 @@ class Delegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     double optimShrinkOffset =
-        normalizationDouble(0, maxExtent, 0, 1, shrinkOffset);
+        normalizeDouble(0, maxExtent, 0, 1, shrinkOffset);
     return SettingsHeader(optimShrinkOffset: optimShrinkOffset);
   }
 

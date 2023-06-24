@@ -29,10 +29,14 @@ class _MyCheckBoxState extends State<MyCheckBox> {
         height: 18,
         width: 18,
         decoration: widget.value
-            ? Theme.of(context).extension<CheckDecorations>()!.done
+            ? Theme.of(context).extension<ExtentionCheckDecoration>()!.done
             : widget.importance == Importance.hight
-                ? Theme.of(context).extension<CheckDecorations>()!.important
-                : Theme.of(context).extension<CheckDecorations>()!.usual,
+                ? Theme.of(context)
+                    .extension<ExtentionCheckDecoration>()!
+                    .important
+                : Theme.of(context)
+                    .extension<ExtentionCheckDecoration>()!
+                    .usual,
         child: widget.value
             ? Icon(
                 Icons.done,

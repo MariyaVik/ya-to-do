@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -9,8 +8,10 @@ import '../../common/utils.dart';
 import '../../entities/importance.dart';
 import '../../entities/task.dart';
 import '../../mobx/state.dart';
-import '../theme/other_styles.dart';
 import 'widgets/info_header.dart';
+import 'widgets/select_deadline.dart';
+import 'widgets/select_importance.dart';
+import 'widgets/task_description_text_field.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key, this.id});
@@ -21,38 +22,23 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  bool hasDeadline = false;
-  late TextEditingController textController;
-
   DateTime? deadLine;
   Importance importance = Importance.none;
 
   Task? task;
 
-  Future<DateTime?> selectDeadLine(BuildContext context) {
-    return showDatePicker(
-        context: context,
-        locale: Provider.of<AppState>(context, listen: false).currentLocale,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime.now().add(const Duration(days: 365)));
-  }
-
   @override
   void initState() {
     super.initState();
     log('ADDTASK [INIT]');
-    textController = TextEditingController();
     if (widget.id != null) {
       Provider.of<AppState>(context, listen: false).currentId = widget.id;
       Provider.of<AppState>(context, listen: false).currentTask =
-          getTaskById(context, widget.id!);
+          context.getTaskById(widget.id!);
       task = Provider.of<AppState>(context, listen: false).currentTask;
 
       if (task != null) {
-        textController.text = task!.text;
-        hasDeadline = task!.deadline != null;
-        if (hasDeadline) {
+        if (task!.deadline != null) {
           deadLine = task!.deadline!;
         }
         importance = task!.importance;
@@ -79,14 +65,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     log('ADDTASK [BUILD]');
-    List<String> importanceName = [
-      AppLocalizations.of(context).importance_no,
-      AppLocalizations.of(context).importance_low,
-      '!! ${AppLocalizations.of(context).importance_high}'
-    ];
-    return SafeArea(
-      child: Scaffold(
-        body: CustomScrollView(
+
+    return Scaffold(
+      body: SafeArea(
+        child: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
                 pinned: true,
@@ -96,114 +78,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               sliver: SliverList(
                   delegate: SliverChildListDelegate([
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: cardShadow()),
-                  child: TextField(
-                    controller: textController,
-                    onTapOutside: (event) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    onChanged: (text) {
-                      task!.text = text;
-                    },
-                    minLines: 3,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).what_do,
-                    ),
-                  ),
-                ),
+                TaskDescriptionTextField(task: task),
                 const SizedBox(height: 28),
                 Text(AppLocalizations.of(context).importance),
-                DropdownButton<Importance>(
-                  value: importance,
-                  iconSize: 0.0,
-                  items: [
-                    for (int i = 0; i < importanceName.length; i++)
-                      DropdownMenuItem<Importance>(
-                        value: Importance
-                            .values[importanceName.indexOf(importanceName[i])],
-                        child: Text(
-                          importanceName[i],
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: i == 2
-                                      ? Theme.of(context).colorScheme.error
-                                      : null),
-                        ),
-                      )
-                  ],
-                  onChanged: (newValue) {
-                    setState(() {
-                      importance = newValue ?? importance;
-                      task!.importance = importance;
-                    });
-                  },
-                  selectedItemBuilder: (context) => importanceName
-                      .map((e) => Text(e,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall!
-                              .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.tertiary)))
-                      .toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(AppLocalizations.of(context).do_until),
-                        if (hasDeadline)
-                          GestureDetector(
-                            onTap: () async {
-                              deadLine =
-                                  await selectDeadLine(context) ?? deadLine;
-                              task!.deadline = deadLine;
-                              setState(() {});
-                            },
-                            child: Text(
-                              DateFormat(
-                                      'd MMMM yyyy',
-                                      Provider.of<AppState>(context,
-                                              listen: false)
-                                          .currentLocale
-                                          .languageCode)
-                                  .format(deadLine!),
-                              // getDateString(context, deadLine!),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                            ),
-                          )
-                      ],
-                    ),
-                    Switch(
-                        value: hasDeadline,
-                        onChanged: (value) async {
-                          hasDeadline = value;
-                          if (hasDeadline) {
-                            deadLine =
-                                await selectDeadLine(context) ?? deadLine;
-                            hasDeadline = deadLine != null;
-                            task!.deadline = deadLine;
-                          } else {
-                            task!.deadline = null;
-                          }
-                          setState(() {});
-                        })
-                  ],
-                ),
+                SelectImportance(importance: importance, task: task!),
+                SelectDeadline(deadline: deadLine, task: task!),
                 const SizedBox(height: 32),
               ])),
             ),
@@ -247,7 +126,7 @@ class Delegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     double optimShrinkOffset =
-        normalizationDouble(0, maxExtent, 0, 1, shrinkOffset);
+        normalizeDouble(0, maxExtent, 0, 1, shrinkOffset);
     return InfoHeader(optimShrinkOffset: optimShrinkOffset);
   }
 

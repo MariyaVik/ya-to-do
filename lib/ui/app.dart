@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:ya_to_do/ui/navigation/main_navigation.dart';
+import 'package:ya_to_do/common/navigation/main_navigation.dart';
 
 import '../mobx/state.dart';
 import '../services/client_api.dart';
@@ -17,7 +17,8 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(
-            create: (context) => AppState(ClientAPI.instance, IsarService())),
+            create: (context) =>
+                AppState(ClientAPI.instance, IsarService.instance)),
       ],
       child: Observer(builder: (context) {
         return MaterialApp(

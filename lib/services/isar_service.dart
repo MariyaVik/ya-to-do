@@ -9,9 +9,10 @@ import '../entities/task_isar.dart';
 class IsarService {
   late Future<Isar> db;
 
-  IsarService() {
+  IsarService._() {
     db = openDB();
   }
+  static final instance = IsarService._();
 
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {

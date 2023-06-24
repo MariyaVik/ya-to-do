@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../info_screen/add_task_page.dart';
-import '../home_screen.dart/home_page.dart';
-import '../settings_screen/settings_page.dart';
+import '../../ui/info_screen/add_task_page.dart';
+import '../../ui/home_screen.dart/home_page.dart';
+import '../../ui/settings_screen/settings_page.dart';
 import 'route_name.dart';
 
 class AppNavigation {
