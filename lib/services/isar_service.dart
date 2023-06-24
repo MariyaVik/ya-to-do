@@ -30,6 +30,7 @@ class IsarService {
   Future<List<Task>> getAllTasks() async {
     final isar = await db;
     final items = await isar.taskIsars.where().findAll();
+    log('ЗАГРУЗИЛИ все задачи из БД');
     return items
         .map((e) => Task(
               id: e.taskId,
@@ -76,14 +77,14 @@ class IsarService {
       ..changedAt = newTask.changedAt
       ..lastUpdatedBy = newTask.lastUpdatedBy;
     isar.writeTxnSync(() => isar.taskIsars.putSync(task));
+    log('ДОБАВИЛИ задачу в БД');
   }
 
   Future<void> deleteTask(String taskId) async {
     final isar = await db;
     await isar.writeTxn(() async {
-      final count =
-          await isar.taskIsars.filter().taskIdEqualTo(taskId).deleteAll();
-      log('We deleted $count recipes');
+      await isar.taskIsars.filter().taskIdEqualTo(taskId).deleteAll();
+      log('УДАЛИЛИ задачу из БД');
     });
   }
 
@@ -103,7 +104,7 @@ class IsarService {
         ..createdAt = task.createdAt
         ..changedAt = task.changedAt
         ..lastUpdatedBy = task.lastUpdatedBy);
-      log('EDIT task');
+      log('ИЗМЕНИЛИ задачу в БД');
     });
   }
 

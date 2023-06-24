@@ -37,12 +37,16 @@ class HomePage extends StatelessWidget {
               final tasks = filterAll
                   ? Provider.of<AppState>(context).tasks
                   : Provider.of<AppState>(context).undoneTasks;
-              if (filterAll && tasks.isEmpty) {
-                return SliverCenterText(
-                    text: AppLocalizations.of(context).no_tasks);
+              bool isLoading = Provider.of<AppState>(context).isLoading;
+              if (isLoading) {
+                return const SliverCenterWidget(
+                    child: CircularProgressIndicator());
+              } else if (filterAll && tasks.isEmpty) {
+                return SliverCenterWidget(
+                    child: Text(AppLocalizations.of(context).no_tasks));
               } else if (!filterAll && tasks.isEmpty) {
-                return SliverCenterText(
-                    text: AppLocalizations.of(context).no_undone_tasks);
+                return SliverCenterWidget(
+                    child: Text(AppLocalizations.of(context).no_undone_tasks));
               }
               return SliverToBoxAdapter(
                 child: Container(

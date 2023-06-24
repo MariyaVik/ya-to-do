@@ -31,6 +31,9 @@ abstract class _AppState with Store {
   @observable
   ObservableList<Task> tasks = ObservableList.of([]);
 
+  @observable
+  bool isLoading = true;
+
   String? currentId;
   Task? currentTask;
 
@@ -44,13 +47,10 @@ abstract class _AppState with Store {
   ObservableList<Task> get undoneTasks =>
       ObservableList.of(tasks.where((element) => element.isDone == false));
 
-  // @observable
-  // ObservableStream  tasksDB = ObservableStream(db.listenTasks());
-
   @action
   Future<void> addTask(Task task) async {
     tasks.add(task);
-    log('ДОБАВИЛИ задачу c id ${task.id}');
+
     db.addTask(task);
     try {
       revision = await rep.addTask(task, revision);
@@ -64,7 +64,6 @@ abstract class _AppState with Store {
     tasks.remove(tasks.where((element) => element.id == id).first);
     currentId = null;
     currentTask = null;
-    log('УДАЛИЛИ задачу c id $id');
     db.deleteTask(id);
     try {
       revision = await rep.deleteTask(id, revision);
@@ -91,7 +90,6 @@ abstract class _AppState with Store {
     ]);
     currentId = null;
     currentTask = null;
-    log('ИЗМЕНИЛИ задачу c id $id');
     Task task = tasks[index];
     db.editTask(task);
     try {
@@ -111,7 +109,6 @@ abstract class _AppState with Store {
         else
           tasks[i].copyWith(isDone: !tasks[index].isDone)
     ]);
-    log('ИЗМЕНИЛИ выполнение задачи c id $id ');
     Task task = tasks[index];
     db.editTask(task);
     try {
@@ -128,6 +125,7 @@ abstract class _AppState with Store {
 
   @action
   Future<void> loadAllTodos() async {
+    isLoading = true;
     try {
       var data = await rep.getTodos();
       revision = data['revision'];
@@ -141,6 +139,7 @@ abstract class _AppState with Store {
       log('ОШИБКА ЗАГРУЗКИ С СЕРВЕРА $e');
       tasks = ObservableList<Task>.of(await db.getAllTasks());
     }
+    isLoading = false;
   }
 
   @action

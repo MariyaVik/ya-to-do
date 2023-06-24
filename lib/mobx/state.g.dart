@@ -54,6 +54,22 @@ mixin _$AppState on _AppState, Store {
     });
   }
 
+  late final _$isLoadingAtom =
+      Atom(name: '_AppState.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
   late final _$currentFilterAtom =
       Atom(name: '_AppState.currentFilter', context: context);
 
@@ -141,6 +157,7 @@ mixin _$AppState on _AppState, Store {
     return '''
 currentLocale: ${currentLocale},
 tasks: ${tasks},
+isLoading: ${isLoading},
 currentFilter: ${currentFilter},
 doneCount: ${doneCount},
 undoneTasks: ${undoneTasks}

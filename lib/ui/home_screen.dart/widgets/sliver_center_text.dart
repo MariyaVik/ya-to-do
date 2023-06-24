@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SliverCenterText extends StatelessWidget {
-  final String text;
-  const SliverCenterText({super.key, required this.text});
+class SliverCenterWidget extends StatelessWidget {
+  final Widget child;
+  const SliverCenterWidget({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       hasScrollBody: false,
-      child: Center(child: Text(text)),
+      child: Center(child: child),
     );
   }
 }
