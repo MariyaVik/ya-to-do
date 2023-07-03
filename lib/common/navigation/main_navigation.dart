@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../info_screen/add_task_page.dart';
-import '../home_screen.dart/home_page.dart';
+import '../../ui/info_screen/add_task_page.dart';
+import '../../ui/home_screen.dart/home_page.dart';
+import '../../ui/settings_screen/settings_page.dart';
 import 'route_name.dart';
 
 class AppNavigation {
@@ -12,8 +13,10 @@ class AppNavigation {
       case AppNavRouteName.home:
         return MaterialPageRoute(builder: (context) => const HomePage());
       case AppNavRouteName.addTask:
-        final arg = settings.arguments as int?;
+        final arg = settings.arguments as String?;
         return MaterialPageRoute(builder: (context) => AddTaskPage(id: arg));
+      case AppNavRouteName.settings:
+        return MaterialPageRoute(builder: (context) => const SettingsPage());
 
       default:
         return MaterialPageRoute(

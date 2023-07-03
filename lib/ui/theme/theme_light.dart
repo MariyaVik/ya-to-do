@@ -6,7 +6,7 @@ import 'extention_check_decoration.dart';
 ThemeData _themeLight = ThemeData.light();
 
 ThemeData themeLight = _themeLight.copyWith(
-    extensions: [CheckDecorations.light],
+    extensions: [ExtentionCheckDecoration.light],
     colorScheme: _schemeLight(_themeLight.colorScheme),
     textButtonTheme: TextButtonThemeData(style: _textButtonLight),
     textTheme: _textLight(_themeLight.textTheme),

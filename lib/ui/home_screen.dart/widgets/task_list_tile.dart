@@ -1,23 +1,24 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ya_to_do/entities/importance.dart';
 
 import '../../../common/utils.dart';
 import '../../../mobx/state.dart';
-import '../../navigation/route_name.dart';
+import '../../../common/navigation/route_name.dart';
 import 'check_box_custom.dart';
 
 class TaskListTile extends StatelessWidget {
   const TaskListTile({super.key, required this.id});
 
-  final int id;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
     final tasks = Provider.of<AppState>(context).tasks;
-    int index = tasks.indexOf(getTaskById(context, id));
+    int index = tasks.indexOf(context.getTaskById(id));
     return ListTile(
       onTap: () {
         Provider.of<AppState>(context, listen: false).toggleDone(id);
@@ -27,7 +28,7 @@ class TaskListTile extends StatelessWidget {
         onChanged: (val) {
           Provider.of<AppState>(context, listen: false).toggleDone(id);
         },
-        importance: tasks[index].importance!,
+        importance: tasks[index].importance,
       ),
       trailing: IconButton(
           onPressed: () {
@@ -81,7 +82,13 @@ class TaskListTile extends StatelessWidget {
       ),
       subtitle: tasks[index].deadline == null
           ? null
-          : Text(getDateString(tasks[index].deadline!),
+          : Text(
+              DateFormat(
+                      'd MMMM yyyy',
+                      Provider.of<AppState>(context, listen: false)
+                          .currentLocale
+                          .languageCode)
+                  .format(tasks[index].deadline!),
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: Theme.of(context).colorScheme.tertiary,
                   )),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:ya_to_do/ui/navigation/main_navigation.dart';
+import 'package:ya_to_do/common/navigation/main_navigation.dart';
 
 import '../mobx/state.dart';
+import '../services/client_api.dart';
+import '../services/isar_service.dart';
 import 'theme/theme_light.dart';
 
 class App extends StatelessWidget {
@@ -13,17 +16,22 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (context) => AppState()),
+        Provider(
+            create: (context) =>
+                AppState(ClientAPI.instance, IsarService.instance)),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-        supportedLocales: const [Locale('ru'), Locale('en')],
-        title: 'Список дел',
-        theme: themeLight,
-        initialRoute: AppNavigation.initialRoute,
-        onGenerateRoute: AppNavigation.onGenerateRoute,
-      ),
+      child: Observer(builder: (context) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Provider.of<AppState>(context).currentLocale,
+          title: 'To-do list',
+          theme: themeLight,
+          initialRoute: AppNavigation.initialRoute,
+          onGenerateRoute: AppNavigation.onGenerateRoute,
+        );
+      }),
     );
   }
 }

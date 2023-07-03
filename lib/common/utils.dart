@@ -4,39 +4,32 @@ import 'package:provider/provider.dart';
 import '../entities/task.dart';
 import '../mobx/state.dart';
 
-double normalizationDouble(
+double normalizeDouble(
     double oldMin, double oldMax, double newMin, double newMax, double number) {
   double oldRange = oldMax - oldMin;
   double newRange = newMax - newMin;
   return ((number - oldMin) * newRange / oldRange) + newMin;
 }
 
-String getMonthName(int num) {
-  var month = [
-    'января',
-    'февраля',
-    'марта',
-    'апреля',
-    'мая',
-    'июня',
-    'июля',
-    'августа',
-    'сентября',
-    'октября',
-    'ноября',
-    'декабря'
-  ];
-  return month[num - 1];
-}
+// Task getTaskById(BuildContext context, String id) {
+//   if (context.mounted) {
+//       return Provider.of<AppState>(context, listen: false)
+//           .tasks
+//           .where((element) => element.id == id)
+//           .first;
+//     }
+//     throw Exception('нет доступа к стэйту');
+// }
 
-String getDateString(DateTime date) {
-  // может добавть возможжномть возвращать null ? ПОДУМАТЬ
-  return '${date.day} ${getMonthName(date.month)} ${date.year}';
-}
-
-Task getTaskById(BuildContext context, int id) {
-  return Provider.of<AppState>(context, listen: false)
-      .tasks
-      .where((element) => element.id == id)
-      .first;
+// совет предыдущего проверяющего, пока не поняла, как удобнее/лучше
+extension GetTaskByIdFromContextExtension on BuildContext {
+  Task getTaskById(String id) {
+    if (mounted) {
+      return Provider.of<AppState>(this, listen: false)
+          .tasks
+          .where((element) => element.id == id)
+          .first;
+    }
+    throw Exception('нет доступа к стэйту');
+  }
 }

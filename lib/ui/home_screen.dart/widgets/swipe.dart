@@ -5,7 +5,7 @@ import '../../../mobx/state.dart';
 
 class MySwipe extends StatefulWidget {
   final Widget child;
-  final int id;
+  final String id;
   const MySwipe({super.key, required this.child, required this.id});
 
   @override
@@ -17,7 +17,7 @@ class _MySwipeState extends State<MySwipe> {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ValueKey<int>(widget.id),
+      key: ValueKey<String>(widget.id),
       secondaryBackground: Container(
         color: Theme.of(context).colorScheme.error,
         child: Stack(

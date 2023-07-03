@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ya_to_do/ui/theme/colors_ligth.dart';
 
 @immutable
-class CheckDecorations extends ThemeExtension<CheckDecorations> {
-  const CheckDecorations({
+class ExtentionCheckDecoration
+    extends ThemeExtension<ExtentionCheckDecoration> {
+  const ExtentionCheckDecoration({
     required this.done,
     required this.important,
     required this.usual,
@@ -14,12 +15,12 @@ class CheckDecorations extends ThemeExtension<CheckDecorations> {
   final BoxDecoration? usual;
 
   @override
-  ThemeExtension<CheckDecorations> copyWith({
+  ThemeExtension<ExtentionCheckDecoration> copyWith({
     BoxDecoration? done,
     BoxDecoration? important,
     BoxDecoration? usual,
   }) {
-    return CheckDecorations(
+    return ExtentionCheckDecoration(
       done: done ?? this.done,
       important: important ?? this.important,
       usual: usual ?? this.usual,
@@ -27,12 +28,12 @@ class CheckDecorations extends ThemeExtension<CheckDecorations> {
   }
 
   @override
-  ThemeExtension<CheckDecorations> lerp(
-      ThemeExtension<CheckDecorations>? other, double t) {
-    if (other is! CheckDecorations) {
+  ThemeExtension<ExtentionCheckDecoration> lerp(
+      ThemeExtension<ExtentionCheckDecoration>? other, double t) {
+    if (other is! ExtentionCheckDecoration) {
       return this;
     }
-    return CheckDecorations(
+    return ExtentionCheckDecoration(
       done: BoxDecoration.lerp(done, other.done, t),
       important: BoxDecoration.lerp(important, other.important, t),
       usual: BoxDecoration.lerp(usual, other.usual, t),
@@ -44,7 +45,7 @@ class CheckDecorations extends ThemeExtension<CheckDecorations> {
     return 'CheckDecorations(done: $done, important: $important, usual: $usual)';
   }
 
-  static final light = CheckDecorations(
+  static final light = ExtentionCheckDecoration(
     done: BoxDecoration(
         borderRadius: BorderRadius.circular(3), color: ColorsLight.green),
     important: BoxDecoration(

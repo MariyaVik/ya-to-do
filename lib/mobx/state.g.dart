@@ -22,12 +22,22 @@ mixin _$AppState on _AppState, Store {
           Computed<ObservableList<Task>>(() => super.undoneTasks,
               name: '_AppState.undoneTasks'))
       .value;
-  Computed<int>? _$lastIdComputed;
+
+  late final _$currentLocaleAtom =
+      Atom(name: '_AppState.currentLocale', context: context);
 
   @override
-  int get lastId => (_$lastIdComputed ??=
-          Computed<int>(() => super.lastId, name: '_AppState.lastId'))
-      .value;
+  Locale get currentLocale {
+    _$currentLocaleAtom.reportRead();
+    return super.currentLocale;
+  }
+
+  @override
+  set currentLocale(Locale value) {
+    _$currentLocaleAtom.reportWrite(value, super.currentLocale, () {
+      super.currentLocale = value;
+    });
+  }
 
   late final _$tasksAtom = Atom(name: '_AppState.tasks', context: context);
 
@@ -41,6 +51,22 @@ mixin _$AppState on _AppState, Store {
   set tasks(ObservableList<Task> value) {
     _$tasksAtom.reportWrite(value, super.tasks, () {
       super.tasks = value;
+    });
+  }
+
+  late final _$isLoadingAtom =
+      Atom(name: '_AppState.isLoading', context: context);
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
     });
   }
 
@@ -60,52 +86,67 @@ mixin _$AppState on _AppState, Store {
     });
   }
 
+  late final _$addTaskAsyncAction =
+      AsyncAction('_AppState.addTask', context: context);
+
+  @override
+  Future<void> addTask(Task task) {
+    return _$addTaskAsyncAction.run(() => super.addTask(task));
+  }
+
+  late final _$removeTaskAsyncAction =
+      AsyncAction('_AppState.removeTask', context: context);
+
+  @override
+  Future<void> removeTask(String id) {
+    return _$removeTaskAsyncAction.run(() => super.removeTask(id));
+  }
+
+  late final _$editTaskAsyncAction =
+      AsyncAction('_AppState.editTask', context: context);
+
+  @override
+  Future<void> editTask(String id,
+      {String? newText, Importance? newImportance, DateTime? newDeadline}) {
+    return _$editTaskAsyncAction.run(() => super.editTask(id,
+        newText: newText,
+        newImportance: newImportance,
+        newDeadline: newDeadline));
+  }
+
+  late final _$toggleDoneAsyncAction =
+      AsyncAction('_AppState.toggleDone', context: context);
+
+  @override
+  Future<void> toggleDone(String id) {
+    return _$toggleDoneAsyncAction.run(() => super.toggleDone(id));
+  }
+
+  late final _$loadAllTodosAsyncAction =
+      AsyncAction('_AppState.loadAllTodos', context: context);
+
+  @override
+  Future<void> loadAllTodos() {
+    return _$loadAllTodosAsyncAction.run(() => super.loadAllTodos());
+  }
+
+  late final _$getDeviceIdAsyncAction =
+      AsyncAction('_AppState.getDeviceId', context: context);
+
+  @override
+  Future<void> getDeviceId() {
+    return _$getDeviceIdAsyncAction.run(() => super.getDeviceId());
+  }
+
   late final _$_AppStateActionController =
       ActionController(name: '_AppState', context: context);
 
   @override
-  void addTask(Task task) {
+  dynamic changeLocale(Locale newLocale) {
     final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.addTask');
+        _$_AppStateActionController.startAction(name: '_AppState.changeLocale');
     try {
-      return super.addTask(task);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void removeTask(int id) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.removeTask');
-    try {
-      return super.removeTask(id);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void editTask(int id,
-      {String? newText, Importance? newImportance, DateTime? newDeadline}) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.editTask');
-    try {
-      return super.editTask(id,
-          newText: newText,
-          newImportance: newImportance,
-          newDeadline: newDeadline);
-    } finally {
-      _$_AppStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void toggleDone(int id) {
-    final _$actionInfo =
-        _$_AppStateActionController.startAction(name: '_AppState.toggleDone');
-    try {
-      return super.toggleDone(id);
+      return super.changeLocale(newLocale);
     } finally {
       _$_AppStateActionController.endAction(_$actionInfo);
     }
@@ -114,11 +155,12 @@ mixin _$AppState on _AppState, Store {
   @override
   String toString() {
     return '''
+currentLocale: ${currentLocale},
 tasks: ${tasks},
+isLoading: ${isLoading},
 currentFilter: ${currentFilter},
 doneCount: ${doneCount},
-undoneTasks: ${undoneTasks},
-lastId: ${lastId}
+undoneTasks: ${undoneTasks}
     ''';
   }
 }

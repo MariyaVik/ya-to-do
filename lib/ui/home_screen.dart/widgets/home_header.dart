@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:ya_to_do/common/navigation/route_name.dart';
 
 import '../../../common/utils.dart';
 import '../../../entities/filter.dart';
@@ -23,23 +25,39 @@ class HomeHeader extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            left: normalizationDouble(1, 0, 16, 60, optimShrinkOffset),
-            bottom: normalizationDouble(1, 0, 16, 44, optimShrinkOffset),
-            child: Text(
-              'Мои дела',
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  fontSize:
-                      normalizationDouble(1, 0, 20, 32, optimShrinkOffset)),
+            left: normalizeDouble(1, 0, 16, 60, optimShrinkOffset),
+            bottom: normalizeDouble(1, 0, 16, 44, optimShrinkOffset),
+            child: Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context).title,
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      fontSize:
+                          normalizeDouble(1, 0, 20, 32, optimShrinkOffset)),
+                ),
+                if (optimShrinkOffset < 0.5)
+                  Opacity(
+                      opacity: optimShrinkOffset < 0.5
+                          ? 1 - 2 * optimShrinkOffset
+                          : 0,
+                      child: IconButton(
+                          visualDensity: VisualDensity.compact,
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(AppNavRouteName.settings);
+                          },
+                          icon: const Icon(Icons.settings)))
+              ],
             ),
           ),
           Positioned(
-            left: normalizationDouble(1, 0, 16, 60, optimShrinkOffset),
-            bottom: normalizationDouble(1, 0, 12, 18, optimShrinkOffset),
+            left: normalizeDouble(1, 0, 16, 60, optimShrinkOffset),
+            bottom: normalizeDouble(1, 0, 12, 18, optimShrinkOffset),
             child: Opacity(
               opacity: optimShrinkOffset < 0.5 ? 1 - 2 * optimShrinkOffset : 0,
               child: Observer(builder: (context) {
                 return Text(
-                    'Выполнено — ${Provider.of<AppState>(context).doneCount}',
+                    '${AppLocalizations.of(context).done} — ${Provider.of<AppState>(context).doneCount}',
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Theme.of(context).colorScheme.tertiary,
                         ));

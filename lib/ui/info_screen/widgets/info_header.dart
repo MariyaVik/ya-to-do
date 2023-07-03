@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../mobx/state.dart';
 import '../../theme/other_styles.dart';
@@ -38,14 +39,17 @@ class InfoHeader extends StatelessWidget {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              content: const Text('Введите описание задачи!'),
+                              content: Text(AppLocalizations.of(context)
+                                  .warning_description),
                               actions: [
                                 TextButton(
                                     onPressed: () {
                                       log('BACK TO ADDTASK');
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Понятно'.toUpperCase()))
+                                    child: Text(AppLocalizations.of(context)
+                                        .ok
+                                        .toUpperCase()))
                               ],
                             );
                           },
@@ -65,7 +69,8 @@ class InfoHeader extends StatelessWidget {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: Text('Сохранить'.toUpperCase()))
+                    child:
+                        Text(AppLocalizations.of(context).save.toUpperCase()))
               ],
             )));
   }
