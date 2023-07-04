@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:ya_to_do/common/navigation/main_navigation.dart';
 
+import '../common/navigation/route_information_parser.dart';
+import '../common/navigation/router_delegate.dart';
 import '../mobx/state.dart';
 import '../services/client_api.dart';
 import '../services/isar_service.dart';
-import 'theme/theme_light.dart';
+import '../common/theme/theme_light.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  App({super.key});
+  // final MyRouterDelegate _routerDelegate = MyRouterDelegate();
+  final _routeInformationParser = MyRouteInformationParser();
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +22,18 @@ class App extends StatelessWidget {
         Provider(
             create: (context) =>
                 AppState(ClientAPI.instance, IsarService.instance)),
+        Provider(create: (context) => MyRouterDelegate()),
       ],
       child: Observer(builder: (context) {
-        return MaterialApp(
+        return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: Provider.of<AppState>(context).currentLocale,
           title: 'To-do list',
           theme: themeLight,
-          initialRoute: AppNavigation.initialRoute,
-          onGenerateRoute: AppNavigation.onGenerateRoute,
+          routerDelegate: Provider.of<MyRouterDelegate>(context, listen: false),
+          routeInformationParser: _routeInformationParser,
         );
       }),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../entities/importance.dart';
-import '../../theme/extention_check_decoration.dart';
+import '../../../common/theme/extention_check_decoration.dart';
 
 class MyCheckBox extends StatefulWidget {
   final bool value;

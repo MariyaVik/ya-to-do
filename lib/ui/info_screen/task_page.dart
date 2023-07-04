@@ -13,15 +13,15 @@ import 'widgets/select_deadline.dart';
 import 'widgets/select_importance.dart';
 import 'widgets/task_description_text_field.dart';
 
-class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({super.key, this.id});
+class TaskPage extends StatefulWidget {
+  const TaskPage({super.key, this.id});
   final String? id;
 
   @override
-  State<AddTaskPage> createState() => _AddTaskPageState();
+  State<TaskPage> createState() => _TaskPageState();
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
+class _TaskPageState extends State<TaskPage> {
   DateTime? deadLine;
   Importance importance = Importance.none;
 

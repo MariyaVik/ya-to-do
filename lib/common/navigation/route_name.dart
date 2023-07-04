@@ -1,5 +1,7 @@
 abstract class AppNavRouteName {
-  static const home = 'home';
-  static const addTask = 'home/addTask';
-  static const settings = 'home/settings';
+  static const home = '';
+  static const task = 'task';
+  static const newTask = 'new';
+  static const settings = 'settings';
+  static const unknown = "unknown";
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../entities/task.dart';
-import '../../theme/other_styles.dart';
+import '../../../common/theme/other_styles.dart';
 
 class TaskDescriptionTextField extends StatefulWidget {
   final Task? task;

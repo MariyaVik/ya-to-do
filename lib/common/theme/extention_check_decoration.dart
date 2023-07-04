@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ya_to_do/ui/theme/colors_ligth.dart';
+import 'package:ya_to_do/common/theme/colors_ligth.dart';
 
 @immutable
 class ExtentionCheckDecoration
