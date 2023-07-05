@@ -8,29 +8,27 @@ import 'package:mobx/mobx.dart';
 import '../entities/filter.dart';
 import '../entities/importance.dart';
 import '../entities/task.dart';
-import '../services/remote/client_api.dart';
+import '../services/local/local_service.dart';
+import '../services/remote/api.dart';
 import '../services/device_info.dart';
-import '../services/local/isar_service.dart';
 
 part 'state.g.dart';
 
 class AppState = _AppState with _$AppState;
 
 abstract class _AppState with Store {
-  final ClientAPI rep;
-  final IsarService db;
+  final Api rep;
+  final LocalService db;
   _AppState(this.rep, this.db) {
-    loadAllTodos();
     getDeviceId();
+    loadAllTodos();
   }
 
   @observable
   ObservableStream<ConnectivityResult> internetStream =
       ObservableStream(Connectivity().onConnectivityChanged);
 
-  // @observable
-  bool hasLocalChanges = false;
-
+  late bool hasLocalChanges = false;
   @observable
   Locale currentLocale = const Locale('ru');
 

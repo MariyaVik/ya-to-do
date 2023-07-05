@@ -22,7 +22,7 @@ class App extends StatelessWidget {
         Provider(
             create: (context) =>
                 AppState(ClientAPI.instance, IsarService.instance)),
-        Provider(create: (context) => MyRouterDelegate()),
+        ChangeNotifierProvider(create: (context) => MyRouterDelegate()),
       ],
       child: Observer(builder: (context) {
         return MaterialApp.router(

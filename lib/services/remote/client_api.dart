@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import '../../entities/task.dart';
 import 'api.dart';
 import 'api_urls.dart';
+import 'dio_exceptions.dart';
 
 String token = 'seismographer';
 
@@ -32,7 +33,8 @@ class ClientAPI implements Api {
       log('ЗАГРУЗИЛИ все задачи с сервера');
       return response.data;
     } on DioException catch (e) {
-      throw 'Something went wrong :(\n ${e.message}';
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
     }
   }
 
@@ -58,7 +60,8 @@ class ClientAPI implements Api {
       log('ДОБАВИЛИ задачу c id ${task.id} на сервер');
       return response.data['revision'];
     } on DioException catch (e) {
-      throw 'Something went wrong :(\n ${e.message}';
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
     }
   }
 
@@ -81,7 +84,8 @@ class ClientAPI implements Api {
       log('УДАЛИЛИ задачу c id $taskId с сервера');
       return response.data['revision'];
     } on DioException catch (e) {
-      throw 'Something went wrong :(\n ${e.message}';
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
     }
   }
 
@@ -107,7 +111,8 @@ class ClientAPI implements Api {
       log('ИЗМЕНИЛИ задачу с id ${task.id} на сервере');
       return response.data['revision'];
     } on DioException catch (e) {
-      throw 'Something went wrong :(\n ${e.message}';
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
     }
   }
 
@@ -135,7 +140,8 @@ class ClientAPI implements Api {
 
       return response.data;
     } on DioException catch (e) {
-      throw 'Something went wrong :(\n ${e.message}';
+      final errorMessage = DioExceptions.fromDioError(e).toString();
+      throw errorMessage;
     }
   }
 }

@@ -24,6 +24,9 @@ class MyRouteInformationParser extends RouteInformationParser<NavigationState> {
 
 // !!! ПРОВЕРИТЬ НА НАЛИЧИЕ ЗАДАЧИ !!!
       if (uri.pathSegments[0] == AppNavRouteName.task) {
+        if (uri.pathSegments[1] == AppNavRouteName.newTask) {
+          return NavigationState.newTask();
+        }
         return NavigationState.task(itemId);
       }
 
