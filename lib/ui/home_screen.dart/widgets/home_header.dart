@@ -1,10 +1,10 @@
 import 'dart:developer';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:ya_to_do/common/navigation/route_name.dart';
 
 import '../../../common/navigation/router_delegate.dart';
 import '../../../common/utils.dart';
@@ -41,14 +41,30 @@ class HomeHeader extends StatelessWidget {
                       opacity: optimShrinkOffset < 0.5
                           ? 1 - 2 * optimShrinkOffset
                           : 0,
-                      child: IconButton(
-                          visualDensity: VisualDensity.compact,
-                          onPressed: () {
-                            Provider.of<MyRouterDelegate>(context,
-                                    listen: false)
-                                .showSettings();
-                          },
-                          icon: const Icon(Icons.settings)))
+                      child: SizedBox(
+                        width: normalizeDouble(1, 0, 0, 40, optimShrinkOffset),
+                        child: IconButton(
+                            iconSize:
+                                normalizeDouble(1, 0, 0, 24, optimShrinkOffset),
+                            visualDensity: VisualDensity.compact,
+                            onPressed: () {
+                              Provider.of<MyRouterDelegate>(context,
+                                      listen: false)
+                                  .showSettings();
+                            },
+                            icon: const Icon(Icons.settings)),
+                      )),
+                if (optimShrinkOffset >= 0.5) const SizedBox(width: 20),
+                Observer(builder: (context) {
+                  return Text(
+                      Provider.of<AppState>(context).internetStream.value ==
+                              ConnectivityResult.none
+                          ? 'Offline'
+                          : 'Online',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ));
+                }),
               ],
             ),
           ),

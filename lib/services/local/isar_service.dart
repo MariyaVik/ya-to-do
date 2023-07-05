@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../entities/task.dart';
-import '../entities/task_isar.dart';
+import '../../entities/task.dart';
+import '../../entities/task_isar.dart';
+import 'local_service.dart';
 
-class IsarService {
+class IsarService implements LocalService {
   late Future<Isar> db;
 
   IsarService._() {
@@ -27,6 +28,7 @@ class IsarService {
     return Future.value(Isar.getInstance());
   }
 
+  @override
   Future<List<Task>> getAllTasks() async {
     final isar = await db;
     final items = await isar.taskIsars.where().findAll();
@@ -46,6 +48,7 @@ class IsarService {
         .toList();
   }
 
+  @override
   Future<List<Task>> getUndoneTasks() async {
     final isar = await db;
     final items = await isar.taskIsars.filter().isDoneEqualTo(true).findAll();
@@ -64,6 +67,7 @@ class IsarService {
         .toList();
   }
 
+  @override
   Future<void> addTask(Task newTask) async {
     final isar = await db;
     final task = TaskIsar()
@@ -80,6 +84,7 @@ class IsarService {
     log('ДОБАВИЛИ задачу в БД');
   }
 
+  @override
   Future<void> deleteTask(String taskId) async {
     final isar = await db;
     await isar.writeTxn(() async {
@@ -88,6 +93,7 @@ class IsarService {
     });
   }
 
+  @override
   Future<void> editTask(Task task) async {
     final isar = await db;
     final isarId =
@@ -108,11 +114,7 @@ class IsarService {
     });
   }
 
-  Stream<List<TaskIsar>> listenTasks() async* {
-    final isar = await db;
-    yield* isar.taskIsars.where().watch();
-  }
-
+  @override
   Future<void> cleanDb() async {
     final isar = await db;
     await isar.writeTxn(() => isar.clear());

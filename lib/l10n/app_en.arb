@@ -16,5 +16,11 @@
     "ok": "OK",
     "new_task": "New",
     "language": "English",
-    "language_en": "English"
+    "language_en": "English",
+    "has_interner_title": "Internet connected",
+    "has_interner_text": "Upload all local changes to the server?",
+    "yes": "Yes",
+    "no": "No",
+    "no_interner_title": "No internet",
+    "no_interner_text": "All updates will be saved locally until the internet is available"
 }

@@ -1,14 +1,16 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 import '../entities/filter.dart';
 import '../entities/importance.dart';
 import '../entities/task.dart';
-import '../services/client_api.dart';
+import '../services/remote/client_api.dart';
 import '../services/device_info.dart';
-import '../services/isar_service.dart';
+import '../services/local/isar_service.dart';
 
 part 'state.g.dart';
 
@@ -21,6 +23,13 @@ abstract class _AppState with Store {
     loadAllTodos();
     getDeviceId();
   }
+
+  @observable
+  ObservableStream<ConnectivityResult> internetStream =
+      ObservableStream(Connectivity().onConnectivityChanged);
+
+  // @observable
+  bool hasLocalChanges = false;
 
   @observable
   Locale currentLocale = const Locale('ru');
@@ -52,8 +61,10 @@ abstract class _AppState with Store {
     tasks.add(task);
 
     db.addTask(task);
+    hasLocalChanges = true;
     try {
       revision = await rep.addTask(task, revision);
+      hasLocalChanges = false;
     } catch (e) {
       log('ОШИБКА ДОБАВЛЕНИЯ НА СЕРВЕР $e');
     }
@@ -65,8 +76,10 @@ abstract class _AppState with Store {
     currentId = null;
     currentTask = null;
     db.deleteTask(id);
+    hasLocalChanges = true;
     try {
       revision = await rep.deleteTask(id, revision);
+      hasLocalChanges = false;
     } catch (e) {
       log('ОШИБКА УДАЛЕНИЯ С СЕРВЕРА $e');
     }
@@ -86,14 +99,20 @@ abstract class _AppState with Store {
           tasks[i]
         else
           tasks[i].copyWith(
-              text: newText, importance: newImportance, deadline: newDeadline)
+              text: newText,
+              importance: newImportance,
+              deadline: newDeadline,
+              changedAt: DateTime.now(),
+              lastUpdatedBy: deviceId)
     ]);
     currentId = null;
     currentTask = null;
     Task task = tasks[index];
     db.editTask(task);
+    hasLocalChanges = true;
     try {
       revision = await rep.editTask(task, revision);
+      hasLocalChanges = false;
     } catch (e) {
       log('ОШИБКА ИЗМЕНЕНИЯ НА СЕРВЕРЕ $e');
     }
@@ -107,12 +126,17 @@ abstract class _AppState with Store {
         if (i != index)
           tasks[i]
         else
-          tasks[i].copyWith(isDone: !tasks[index].isDone)
+          tasks[i].copyWith(
+              isDone: !tasks[index].isDone,
+              changedAt: DateTime.now(),
+              lastUpdatedBy: deviceId)
     ]);
     Task task = tasks[index];
     db.editTask(task);
+    hasLocalChanges = true;
     try {
       revision = await rep.editTask(task, revision);
+      hasLocalChanges = false;
     } catch (e) {
       log('ОШИБКА ИЗМЕНЕНИЯ НА СЕРВЕРЕ $e');
     }
@@ -138,6 +162,26 @@ abstract class _AppState with Store {
     } catch (e) {
       log('ОШИБКА ЗАГРУЗКИ С СЕРВЕРА $e');
       tasks = ObservableList<Task>.of(await db.getAllTasks());
+    }
+    isLoading = false;
+  }
+
+  @action
+  Future<void> exportLocalTodos() async {
+    isLoading = true;
+    tasks = ObservableList<Task>.of(await db.getAllTasks());
+    try {
+      var data = await rep.updateData(revision, tasks);
+      revision = data['revision'];
+      tasks = ObservableList<Task>.of(
+          data['list']?.map<Task>((e) => Task.fromJson(e)).toList());
+      await db.cleanDb();
+      for (var task in tasks) {
+        db.addTask(task);
+      }
+      hasLocalChanges = false;
+    } catch (e) {
+      log('ОШИБКА ЗАГРУЗКИ С СЕРВЕРА $e');
     }
     isLoading = false;
   }

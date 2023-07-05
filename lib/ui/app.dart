@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../common/navigation/route_information_parser.dart';
 import '../common/navigation/router_delegate.dart';
 import '../mobx/state.dart';
-import '../services/client_api.dart';
-import '../services/isar_service.dart';
+import '../services/remote/client_api.dart';
+import '../services/local/isar_service.dart';
 import '../common/theme/theme_light.dart';
 
 class App extends StatelessWidget {

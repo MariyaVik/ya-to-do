@@ -23,6 +23,22 @@ mixin _$AppState on _AppState, Store {
               name: '_AppState.undoneTasks'))
       .value;
 
+  late final _$internetStreamAtom =
+      Atom(name: '_AppState.internetStream', context: context);
+
+  @override
+  ObservableStream<ConnectivityResult> get internetStream {
+    _$internetStreamAtom.reportRead();
+    return super.internetStream;
+  }
+
+  @override
+  set internetStream(ObservableStream<ConnectivityResult> value) {
+    _$internetStreamAtom.reportWrite(value, super.internetStream, () {
+      super.internetStream = value;
+    });
+  }
+
   late final _$currentLocaleAtom =
       Atom(name: '_AppState.currentLocale', context: context);
 
@@ -130,6 +146,14 @@ mixin _$AppState on _AppState, Store {
     return _$loadAllTodosAsyncAction.run(() => super.loadAllTodos());
   }
 
+  late final _$exportLocalTodosAsyncAction =
+      AsyncAction('_AppState.exportLocalTodos', context: context);
+
+  @override
+  Future<void> exportLocalTodos() {
+    return _$exportLocalTodosAsyncAction.run(() => super.exportLocalTodos());
+  }
+
   late final _$getDeviceIdAsyncAction =
       AsyncAction('_AppState.getDeviceId', context: context);
 
@@ -155,6 +179,7 @@ mixin _$AppState on _AppState, Store {
   @override
   String toString() {
     return '''
+internetStream: ${internetStream},
 currentLocale: ${currentLocale},
 tasks: ${tasks},
 isLoading: ${isLoading},
