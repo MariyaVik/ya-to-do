@@ -5,8 +5,7 @@
     <details> 
     <summary>Пример:</summary>
         <a href="https://drive.google.com/file/d/1NzPT6ymNocEy2uPafVB-O8dijTRicjoD/view?usp=sharing">Запасная ссылка на диске</a>
-
-        <img src="assets\screenshots\offline-mode.gif" width=240 hight=550>
+        <p><img src="assets\screenshots\offline-mode.gif" width=240 hight=550></p>
     </details>
 * Работа с данными организована в отдельной сущности
 * State-management - MobX
@@ -15,8 +14,7 @@
     <details> 
     <summary>Пример:</summary>
         <a href="https://drive.google.com/file/d/1rqrnGvHpmy7r6j7w_-sej2QUZcLsQhbZ/view?usp=sharing">Запасная ссылка на диске</a>
-        
-        <img src="assets\screenshots\deeplink.gif" width=240 hight=550>
+        <p><img src="assets\screenshots\deeplink.gif" width=240 hight=550></p>
     </details>
 * Обработка серверных ошибок
 * Интеграционный тест
