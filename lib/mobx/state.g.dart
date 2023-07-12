@@ -9,6 +9,12 @@ part of 'state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AppState on _AppState, Store {
+  Computed<bool>? _$isDarkComputed;
+
+  @override
+  bool get isDark => (_$isDarkComputed ??=
+          Computed<bool>(() => super.isDark, name: '_AppState.isDark'))
+      .value;
   Computed<int>? _$doneCountComputed;
 
   @override
@@ -52,6 +58,22 @@ mixin _$AppState on _AppState, Store {
   set currentLocale(Locale value) {
     _$currentLocaleAtom.reportWrite(value, super.currentLocale, () {
       super.currentLocale = value;
+    });
+  }
+
+  late final _$currentThemeAtom =
+      Atom(name: '_AppState.currentTheme', context: context);
+
+  @override
+  ThemeData get currentTheme {
+    _$currentThemeAtom.reportRead();
+    return super.currentTheme;
+  }
+
+  @override
+  set currentTheme(ThemeData value) {
+    _$currentThemeAtom.reportWrite(value, super.currentTheme, () {
+      super.currentTheme = value;
     });
   }
 
@@ -177,13 +199,26 @@ mixin _$AppState on _AppState, Store {
   }
 
   @override
+  dynamic changeTheme({required bool isDark}) {
+    final _$actionInfo =
+        _$_AppStateActionController.startAction(name: '_AppState.changeTheme');
+    try {
+      return super.changeTheme(isDark: isDark);
+    } finally {
+      _$_AppStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 internetStream: ${internetStream},
 currentLocale: ${currentLocale},
+currentTheme: ${currentTheme},
 tasks: ${tasks},
 isLoading: ${isLoading},
 currentFilter: ${currentFilter},
+isDark: ${isDark},
 doneCount: ${doneCount},
 undoneTasks: ${undoneTasks}
     ''';

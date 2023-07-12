@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ya_to_do/common/theme/theme_dark.dart';
 
+import '../common/theme/theme_light.dart';
 import '../entities/filter.dart';
 import '../entities/importance.dart';
 import '../entities/task.dart';
@@ -31,6 +33,12 @@ abstract class _AppState with Store {
   late bool hasLocalChanges = false;
   @observable
   Locale currentLocale = const Locale('ru');
+
+  @observable
+  ThemeData currentTheme = themeLight;
+
+  @computed
+  bool get isDark => currentTheme == themeDark;
 
   String? deviceId = '';
   int revision = 0;
@@ -143,6 +151,15 @@ abstract class _AppState with Store {
   @action
   changeLocale(Locale newLocale) {
     currentLocale = newLocale;
+  }
+
+  @action
+  changeTheme({required bool isDark}) {
+    if (isDark) {
+      currentTheme = themeDark;
+    } else {
+      currentTheme = themeLight;
+    }
   }
 
   @action

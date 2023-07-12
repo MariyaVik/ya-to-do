@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 import '../../common/utils.dart';
 import '../../mobx/state.dart';
+import 'widgets/language_settings_group.dart';
 import 'widgets/settings_header.dart';
+import 'widgets/theme_settings_group.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -20,28 +22,11 @@ class SettingsPage extends StatelessWidget {
               pinned: true,
               floating: false,
               delegate: Delegate(maxHeight: 56, minHeight: 56)),
-          SliverToBoxAdapter(
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                var locale = AppLocalizations.supportedLocales[index];
-                return Observer(builder: (context) {
-                  return ListTile(
-                    title: Text(lookupAppLocalizations(locale).language),
-                    subtitle: Text(lookupAppLocalizations(locale).language_en),
-                    onTap: () {
-                      Provider.of<AppState>(context, listen: false)
-                          .changeLocale(locale);
-                    },
-                    selected:
-                        Provider.of<AppState>(context).currentLocale == locale,
-                  );
-                });
-              },
-              itemCount: AppLocalizations.supportedLocales.length,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            ),
+          const SliverToBoxAdapter(
+            child: LanguageSettingGroup(),
+          ),
+          const SliverToBoxAdapter(
+            child: ThemeSettingGroup(),
           ),
         ],
       ),

@@ -22,5 +22,9 @@
     "yes": "Yes",
     "no": "No",
     "no_interner_title": "No internet",
-    "no_interner_text": "All updates will be saved locally until the internet is available"
+    "no_interner_text": "All updates will be saved locally until the internet is available",
+    "language_setting": "Language",
+    "theme_setting": "Theme",
+    "dark_theme": "Dark",
+    "light_theme": "Light"
 }

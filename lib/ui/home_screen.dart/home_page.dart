@@ -12,6 +12,7 @@ import '../../common/utils.dart';
 import '../../entities/filter.dart';
 import '../../mobx/state.dart';
 import '../../common/theme/other_styles.dart';
+import '../common/my_card.dart';
 import 'widgets/alert_dialogs.dart';
 import 'widgets/home_header.dart';
 import 'widgets/new_task_list_tile.dart';
@@ -76,13 +77,7 @@ class HomePage extends StatelessWidget {
                 }
 
                 return SliverToBoxAdapter(
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surface,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: cardShadow()),
+                  child: MyCard(
                     child: SingleChildScrollView(
                       child: Column(
                         children: List.generate(
