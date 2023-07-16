@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
-import '../../../common/navigation/route_name.dart';
+import '../../../common/navigation/router_delegate.dart';
 
 class NewTaskListTile extends StatelessWidget {
   const NewTaskListTile({super.key});
@@ -10,7 +13,8 @@ class NewTaskListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.of(context).pushNamed(AppNavRouteName.addTask);
+        log('GO TO ADDTASK');
+        Provider.of<MyRouterDelegate>(context, listen: false).showTask();
       },
       leading: const Icon(Icons.add, color: Colors.transparent),
       title: Text(

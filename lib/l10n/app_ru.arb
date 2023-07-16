@@ -16,5 +16,11 @@
     "ok": "Понятно",
     "new_task": "Новое",
     "language": "Русский",
-    "language_en": "Russian"
+    "language_en": "Russian",
+    "has_interner_title": "Интернет подключен",
+    "has_interner_text": "Загрузить все локальные изменения на сервер?",
+    "yes": "Да",
+    "no": "Нет",
+    "no_interner_title": "Отсутствует интернет",
+    "no_interner_text": "Все обновления будут сохраняться локально, пока не появится интернет"
 }

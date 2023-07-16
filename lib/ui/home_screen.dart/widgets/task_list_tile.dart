@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ya_to_do/entities/importance.dart';
 
+import '../../../common/navigation/router_delegate.dart';
 import '../../../common/utils.dart';
 import '../../../mobx/state.dart';
-import '../../../common/navigation/route_name.dart';
 import 'check_box_custom.dart';
 
 class TaskListTile extends StatelessWidget {
@@ -33,8 +33,8 @@ class TaskListTile extends StatelessWidget {
       trailing: IconButton(
           onPressed: () {
             log('GO TO EDITTASK id ${tasks[index].id}');
-            Navigator.of(context)
-                .pushNamed(AppNavRouteName.addTask, arguments: tasks[index].id);
+            Provider.of<MyRouterDelegate>(context, listen: false)
+                .showTask(tasks[index].id);
           },
           icon: Icon(
             Icons.info_outline,

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../mobx/state.dart';
-import '../../theme/other_styles.dart';
+import '../../../common/theme/other_styles.dart';
 
 class InfoHeader extends StatelessWidget {
   final double optimShrinkOffset;

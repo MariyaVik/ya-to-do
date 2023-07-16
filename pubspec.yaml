@@ -21,14 +21,19 @@ dependencies:
   isar_flutter_libs: 3.1.0+1
   path_provider:
   cupertino_icons: ^1.0.2
+  connectivity_plus:
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
   build_runner:
   isar_generator: 3.1.0+1
   json_serializable: ^6.1.4
   mobx_codegen:
+  mockito:
   flutter_lints: ^2.0.0
 
 flutter:

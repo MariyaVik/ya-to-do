@@ -1,16 +1,18 @@
 import 'dart:math';
 import 'dart:developer' as dev;
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:ya_to_do/common/navigation/route_name.dart';
 
+import '../../common/navigation/router_delegate.dart';
 import '../../common/utils.dart';
 import '../../entities/filter.dart';
 import '../../mobx/state.dart';
-import '../theme/other_styles.dart';
+import '../../common/theme/other_styles.dart';
+import 'widgets/alert_dialogs.dart';
 import 'widgets/home_header.dart';
 import 'widgets/new_task_list_tile.dart';
 import 'widgets/sliver_center_text.dart';
@@ -25,58 +27,84 @@ class HomePage extends StatelessWidget {
     dev.log('HOME [BUILD]');
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-                pinned: true,
-                floating: false,
-                delegate: Delegate(maxHeight: 140, minHeight: 56)),
-            Observer(builder: (context) {
-              final filterAll =
-                  Provider.of<AppState>(context).currentFilter == Filter.all;
-              final tasks = filterAll
-                  ? Provider.of<AppState>(context).tasks
-                  : Provider.of<AppState>(context).undoneTasks;
-              bool isLoading = Provider.of<AppState>(context).isLoading;
-              if (isLoading) {
-                return const SliverCenterWidget(
-                    child: CircularProgressIndicator());
-              } else if (filterAll && tasks.isEmpty) {
-                return SliverCenterWidget(
-                    child: Text(AppLocalizations.of(context).no_tasks));
-              } else if (!filterAll && tasks.isEmpty) {
-                return SliverCenterWidget(
-                    child: Text(AppLocalizations.of(context).no_undone_tasks));
-              }
-              return SliverToBoxAdapter(
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: cardShadow()),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: List.generate(
-                        tasks.length,
-                        (index) {
-                          String i = tasks[index].id;
-                          return MySwipe(id: i, child: TaskListTile(id: i));
-                        },
-                      )..add(const NewTaskListTile()),
+        child: Observer(builder: (context) {
+          final internetStatus = Provider.of<AppState>(context).internetStream;
+          if (internetStatus.value == ConnectivityResult.none) {
+            Future.delayed(Duration.zero, () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const NoInternetAlert();
+                },
+              );
+            });
+          } else if (Provider.of<AppState>(context).hasLocalChanges &&
+              (internetStatus.value == ConnectivityResult.mobile ||
+                  internetStatus.value == ConnectivityResult.wifi)) {
+            Future.delayed(Duration.zero, () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const HasInternetAlert();
+                },
+              );
+            });
+          }
+          return CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                  pinned: true,
+                  floating: false,
+                  delegate: Delegate(maxHeight: 140, minHeight: 56)),
+              Observer(builder: (context) {
+                final filterAll =
+                    Provider.of<AppState>(context).currentFilter == Filter.all;
+                final tasks = filterAll
+                    ? Provider.of<AppState>(context).tasks
+                    : Provider.of<AppState>(context).undoneTasks;
+                bool isLoading = Provider.of<AppState>(context).isLoading;
+                if (isLoading) {
+                  return const SliverCenterWidget(
+                      child: CircularProgressIndicator());
+                } else if (filterAll && tasks.isEmpty) {
+                  return SliverCenterWidget(
+                      child: Text(AppLocalizations.of(context).no_tasks));
+                } else if (!filterAll && tasks.isEmpty) {
+                  return SliverCenterWidget(
+                      child:
+                          Text(AppLocalizations.of(context).no_undone_tasks));
+                }
+
+                return SliverToBoxAdapter(
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    margin: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: cardShadow()),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: List.generate(
+                          tasks.length,
+                          (index) {
+                            String i = tasks[index].id;
+                            return MySwipe(id: i, child: TaskListTile(id: i));
+                          },
+                        )..add(const NewTaskListTile()),
+                      ),
                     ),
                   ),
-                ),
-              );
-            }),
-          ],
-        ),
+                );
+              }),
+            ],
+          );
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           dev.log('GO TO ADDTASK');
-          Navigator.of(context).pushNamed(AppNavRouteName.addTask);
+          Provider.of<MyRouterDelegate>(context, listen: false).showTask();
         },
         child: const Icon(Icons.add),
       ),

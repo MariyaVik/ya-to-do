@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import '../../theme/other_styles.dart';
+import '../../../common/theme/other_styles.dart';
 
 class SettingsHeader extends StatelessWidget {
   final double optimShrinkOffset;
