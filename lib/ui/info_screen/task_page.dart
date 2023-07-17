@@ -2,9 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../common/navigation/router_delegate.dart';
 import '../../common/utils.dart';
 import '../../entities/importance.dart';
 import '../../entities/task.dart';
@@ -13,9 +10,6 @@ import '../common/check_width.dart';
 import 'narrow_version.dart';
 import 'wide_version.dart';
 import 'widgets/info_header.dart';
-import 'widgets/select_deadline.dart';
-import 'widgets/select_importance.dart';
-import 'widgets/task_description_text_field.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key, this.id});

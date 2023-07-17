@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 
 import '../../common/utils.dart';
-import '../../mobx/state.dart';
 import 'widgets/language_settings_group.dart';
 import 'widgets/settings_header.dart';
 import 'widgets/theme_settings_group.dart';

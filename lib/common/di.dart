@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -16,14 +15,6 @@ abstract class ServiceLocator {
     WidgetsFlutterBinding.ensureInitialized();
     await _initFirebase();
     // _initCrashlytics();
-
-    // _locator.registerLazySingleton<FirebaseRemoteConfig>(
-    //   () => FirebaseRemoteConfig.instance,
-    // );
-
-    // final configRepo = ConfigRepository(_locator<FirebaseRemoteConfig>());
-    // await configRepo.init();
-    // _locator.registerSingleton<ConfigRepository>(configRepo);
   }
 
   static Future<void> _initFirebase() async {

@@ -11,7 +11,6 @@ import '../../../common/utils.dart';
 import '../../../entities/filter.dart';
 import '../../../mobx/state.dart';
 import '../../../common/theme/other_styles.dart';
-import '../../common/check_width.dart';
 
 class HomeHeader extends StatelessWidget {
   final double optimShrinkOffset;

@@ -6,12 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../common/navigation/route_information_parser.dart';
 import '../common/navigation/router_delegate.dart';
-import '../common/theme/theme_dark.dart';
 import '../data/config_repository.dart';
 import '../mobx/state.dart';
 import '../services/remote/client_api.dart';
 import '../services/local/isar_service.dart';
-import '../common/theme/theme_light.dart';
 
 class App extends StatelessWidget {
   App({super.key});

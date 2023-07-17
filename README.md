@@ -14,3 +14,8 @@
         <p><img src="assets\screenshots\phone_home_v.jpg" width=240 hight=600> <img src="assets\screenshots\phone_new_v.jpg" width=240 hight=600></p>
     </details>
 * Переключение цвета важности в реальном времени
+
+### Apk (v4)
+[Ссылка](https://github.com/MariyaVik/ya-to-do/releases/tag/v4)
+
+[Запасная ссылка на диске](https://drive.google.com/file/d/11PLv0p8-_RlUg3AvZ1qhoFr9Cz5suvur/view?usp=sharing) 

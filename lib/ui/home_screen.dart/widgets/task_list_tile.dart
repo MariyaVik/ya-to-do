@@ -1,16 +1,13 @@
 import 'dart:developer';
 
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ya_to_do/entities/importance.dart';
 
-import '../../../common/di.dart';
 import '../../../common/navigation/router_delegate.dart';
 import '../../../common/utils.dart';
-import '../../../data/config_repository.dart';
 import '../../../mobx/state.dart';
 import 'check_box_custom.dart';
 
