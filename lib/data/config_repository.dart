@@ -4,40 +4,47 @@ import 'dart:developer';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class ConfigRepository {
-  final FirebaseRemoteConfig _remoteConfig;
+  final FirebaseRemoteConfig remoteConfig;
 
-  ConfigRepository(this._remoteConfig);
+  ConfigRepository(this.remoteConfig);
 
   String get importanceColor {
     log('ПОЛУЧАЕМ ИЗ РЕПЫ');
 
-    return _remoteConfig.getString(ConfigFields.importanceColor);
+    return remoteConfig.getString(ConfigFields.importanceColor);
   }
 
   Future<void> init() async {
-    _remoteConfig.setDefaults({
+    await remoteConfig.ensureInitialized();
+    await remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: Duration.zero,
+      ),
+    );
+    remoteConfig.setDefaults({
       ConfigFields.importanceColor: '',
     });
     log('ИНИТ КОНФИГ');
-    await _remoteConfig.fetchAndActivate();
+    await remoteConfig.fetchAndActivate();
   }
 
-  Stream<RemoteConfigUpdate> stream() {
-    return _remoteConfig.onConfigUpdated;
-    // .listen((event) async {
-    //   log('НОВОЕ ЗНАЧЕНИЕ ${event.updatedKeys}');
+  // Stream<RemoteConfigUpdate> stream() {
+  //   return remoteConfig.onConfigUpdated;
+  //   // .listen((event) async {
+  //   //   log('НОВОЕ ЗНАЧЕНИЕ ${event.updatedKeys}');
 
-    //   await _remoteConfig.activate();
-    // });
-  }
+  //   //   await _remoteConfig.activate();
+  //   // });
+  // }
 
-  Future<void> listen() async {
-    _remoteConfig.onConfigUpdated.listen((event) async {
-      log('НОВОЕ ЗНАЧЕНИЕ ${event.updatedKeys}');
+  // Future<void> listen() async {
+  //   remoteConfig.onConfigUpdated.listen((event) async {
+  //     log('НОВОЕ ЗНАЧЕНИЕ ${event.updatedKeys}');
 
-      await _remoteConfig.activate();
-    });
-  }
+  //     await remoteConfig.activate();
+  //   });
+  // }
 }
 
 abstract class ConfigFields {

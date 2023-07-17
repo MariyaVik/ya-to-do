@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ya_to_do/common/utils.dart';
+
+import 'colors_dark.dart';
+import 'colors_ligth.dart';
 
 List<BoxShadow> headerShadow(double coef) {
   return [
@@ -28,4 +32,20 @@ List<BoxShadow> cardShadow() {
         blurRadius: 2.0,
         offset: const Offset(0.0, 0)),
   ];
+}
+
+BoxDecoration checkDecorDark(String impColor) {
+  final color = impColor == '' ? ColorsDark.red : impColor.toColor();
+  return BoxDecoration(
+      borderRadius: BorderRadius.circular(3),
+      color: color.withOpacity(0.16),
+      border: Border.all(width: 2, color: color));
+}
+
+BoxDecoration checkDecorLight(String impColor) {
+  final color = impColor == '' ? ColorsLight.red : impColor.toColor();
+  return BoxDecoration(
+      borderRadius: BorderRadius.circular(3),
+      color: color.withOpacity(0.16),
+      border: Border.all(width: 2, color: color));
 }

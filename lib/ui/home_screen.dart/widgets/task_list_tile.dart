@@ -15,7 +15,7 @@ import '../../../mobx/state.dart';
 import 'check_box_custom.dart';
 
 class TaskListTile extends StatelessWidget {
-  TaskListTile({super.key, required this.id});
+  const TaskListTile({super.key, required this.id});
 
   final String id;
   // final configRepository = ServiceLocator.configRepository;
@@ -46,17 +46,7 @@ class TaskListTile extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiary,
           )),
       title: Observer(builder: (context) {
-        final configChanges = Provider.of<AppState>(context).configStream;
-        final impColor = Provider.of<AppState>(context).impColor;
-        if (configChanges.value?.updatedKeys
-                .contains(ConfigFields.importanceColor) ??
-            false) {
-          Provider.of<AppState>(context, listen: false).getColor();
-          log('ЦВЕТ->' + impColor.toString() + "<-");
-          log('ЦВЕТ->' +
-              Provider.of<RemoteConfigUpdate>(context).updatedKeys.toString() +
-              "<-");
-        }
+        final impColor = Provider.of<AppState>(context).importanceColor;
 
         return RichText(
           maxLines: 3,
@@ -69,9 +59,9 @@ class TaskListTile extends StatelessWidget {
                 TextSpan(
                   text: '!! ',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: impColor == '' || impColor == null
+                      color: impColor == ''
                           ? Theme.of(context).colorScheme.error
-                          : '#793cd8'.toColor(),
+                          : impColor.toColor(),
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),

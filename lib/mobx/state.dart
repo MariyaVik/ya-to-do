@@ -26,19 +26,29 @@ abstract class _AppState with Store {
   final ConfigRepository config;
   _AppState(this.rep, this.db, this.config) {
     config.init();
-    config.listen();
-    getColor();
+    listenConfig();
     getDeviceId();
     loadAllTodos();
   }
 
   @observable
+  String importanceColor = '';
+
+  @action
+  Future<void> listenConfig() async {
+    importanceColor =
+        config.remoteConfig.getString(ConfigFields.importanceColor);
+    config.remoteConfig.onConfigUpdated.listen((event) async {
+      await config.remoteConfig.activate();
+      importanceColor =
+          config.remoteConfig.getString(ConfigFields.importanceColor);
+      log('ЦВЕТ->$importanceColor<-');
+    });
+  }
+
+  @observable
   ObservableStream<ConnectivityResult> internetStream =
       ObservableStream(Connectivity().onConnectivityChanged);
-
-  @computed
-  ObservableStream<RemoteConfigUpdate> get configStream =>
-      ObservableStream(config.stream());
 
   late bool hasLocalChanges = false;
   @observable
@@ -49,14 +59,6 @@ abstract class _AppState with Store {
 
   @computed
   bool get isDark => currentTheme == themeDark;
-
-  @observable
-  String? impColor;
-
-  @action
-  void getColor() {
-    impColor = config.importanceColor;
-  }
 
   String? deviceId = '';
   int revision = 0;

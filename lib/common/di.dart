@@ -23,7 +23,6 @@ abstract class ServiceLocator {
 
     // final configRepo = ConfigRepository(_locator<FirebaseRemoteConfig>());
     // await configRepo.init();
-    // await configRepo.listen();
     // _locator.registerSingleton<ConfigRepository>(configRepo);
   }
 
