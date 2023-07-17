@@ -14,6 +14,9 @@
         <p><img src="assets\screenshots\phone_home_v.jpg" width=240 hight=600> <img src="assets\screenshots\phone_new_v.jpg" width=240 hight=600></p>
     </details>
 * Переключение цвета важности в реальном времени
+* Firebase Crashlytics
+* Текст обрезается по макету
+* Навигация в отдельной сущности
 
 ### Apk (v4)
 [Ссылка](https://github.com/MariyaVik/ya-to-do/releases/tag/v4)
