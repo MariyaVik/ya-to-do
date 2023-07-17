@@ -29,6 +29,13 @@
             {
               "client_id": "845411070603-eei2nvm2mhued9ocf11s9v3sl8vntluh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "845411070603-kbvsroqveag8eqoqcgh0b3fr9mthat1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yaToDo"
+              }
             }
           ]
         }
