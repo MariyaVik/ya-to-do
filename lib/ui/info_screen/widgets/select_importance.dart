@@ -24,6 +24,7 @@ class _SelectImportanceState extends State<SelectImportance> {
     return DropdownButton<Importance>(
       value: widget.importance,
       iconSize: 0.0,
+      isExpanded: true,
       items: [
         for (int i = 0; i < importanceName.length; i++)
           DropdownMenuItem<Importance>(

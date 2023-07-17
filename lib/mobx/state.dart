@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:ya_to_do/common/theme/theme_dark.dart';
+import 'package:ya_to_do/data/config_repository.dart';
 
 import '../common/theme/theme_light.dart';
 import '../entities/filter.dart';
@@ -21,7 +23,11 @@ class AppState = _AppState with _$AppState;
 abstract class _AppState with Store {
   final Api rep;
   final LocalService db;
-  _AppState(this.rep, this.db) {
+  final ConfigRepository config;
+  _AppState(this.rep, this.db, this.config) {
+    config.init();
+    config.listen();
+    getColor();
     getDeviceId();
     loadAllTodos();
   }
@@ -29,6 +35,10 @@ abstract class _AppState with Store {
   @observable
   ObservableStream<ConnectivityResult> internetStream =
       ObservableStream(Connectivity().onConnectivityChanged);
+
+  @computed
+  ObservableStream<RemoteConfigUpdate> get configStream =>
+      ObservableStream(config.stream());
 
   late bool hasLocalChanges = false;
   @observable
@@ -39,6 +49,14 @@ abstract class _AppState with Store {
 
   @computed
   bool get isDark => currentTheme == themeDark;
+
+  @observable
+  String? impColor;
+
+  @action
+  void getColor() {
+    impColor = config.importanceColor;
+  }
 
   String? deviceId = '';
   int revision = 0;

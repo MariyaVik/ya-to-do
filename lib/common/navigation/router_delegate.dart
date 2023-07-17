@@ -76,4 +76,9 @@ class MyRouterDelegate extends RouterDelegate<NavigationState>
     state = NavigationState.settings();
     notifyListeners();
   }
+
+  void goBack() {
+    navigatorKey.currentState!.pop();
+    // notifyListeners();
+  }
 }

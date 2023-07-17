@@ -9,6 +9,15 @@ part of 'state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$AppState on _AppState, Store {
+  Computed<ObservableStream<RemoteConfigUpdate>>? _$configStreamComputed;
+
+  @override
+  ObservableStream<RemoteConfigUpdate> get configStream =>
+      (_$configStreamComputed ??=
+              Computed<ObservableStream<RemoteConfigUpdate>>(
+                  () => super.configStream,
+                  name: '_AppState.configStream'))
+          .value;
   Computed<bool>? _$isDarkComputed;
 
   @override
@@ -74,6 +83,22 @@ mixin _$AppState on _AppState, Store {
   set currentTheme(ThemeData value) {
     _$currentThemeAtom.reportWrite(value, super.currentTheme, () {
       super.currentTheme = value;
+    });
+  }
+
+  late final _$impColorAtom =
+      Atom(name: '_AppState.impColor', context: context);
+
+  @override
+  String? get impColor {
+    _$impColorAtom.reportRead();
+    return super.impColor;
+  }
+
+  @override
+  set impColor(String? value) {
+    _$impColorAtom.reportWrite(value, super.impColor, () {
+      super.impColor = value;
     });
   }
 
@@ -188,6 +213,17 @@ mixin _$AppState on _AppState, Store {
       ActionController(name: '_AppState', context: context);
 
   @override
+  void getColor() {
+    final _$actionInfo =
+        _$_AppStateActionController.startAction(name: '_AppState.getColor');
+    try {
+      return super.getColor();
+    } finally {
+      _$_AppStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeLocale(Locale newLocale) {
     final _$actionInfo =
         _$_AppStateActionController.startAction(name: '_AppState.changeLocale');
@@ -215,9 +251,11 @@ mixin _$AppState on _AppState, Store {
 internetStream: ${internetStream},
 currentLocale: ${currentLocale},
 currentTheme: ${currentTheme},
+impColor: ${impColor},
 tasks: ${tasks},
 isLoading: ${isLoading},
 currentFilter: ${currentFilter},
+configStream: ${configStream},
 isDark: ${isDark},
 doneCount: ${doneCount},
 undoneTasks: ${undoneTasks}

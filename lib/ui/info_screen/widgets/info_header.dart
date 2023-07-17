@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../common/navigation/router_delegate.dart';
 import '../../../mobx/state.dart';
 import '../../../common/theme/other_styles.dart';
 
@@ -24,7 +25,8 @@ class InfoHeader extends StatelessWidget {
                 IconButton(
                     onPressed: () {
                       log('BACK TO HOME');
-                      Navigator.of(context).pop();
+                      Provider.of<MyRouterDelegate>(context, listen: false)
+                          .goBack();
                     },
                     icon: const Icon(Icons.close)),
                 TextButton(
@@ -45,7 +47,9 @@ class InfoHeader extends StatelessWidget {
                                 TextButton(
                                     onPressed: () {
                                       log('BACK TO ADDTASK');
-                                      Navigator.of(context).pop();
+                                      Provider.of<MyRouterDelegate>(context,
+                                              listen: false)
+                                          .goBack();
                                     },
                                     child: Text(AppLocalizations.of(context)
                                         .ok
@@ -66,7 +70,8 @@ class InfoHeader extends StatelessWidget {
                               .addTask(task);
                         }
                         log('BACK TO HOME');
-                        Navigator.of(context).pop();
+                        Provider.of<MyRouterDelegate>(context, listen: false)
+                            .goBack();
                       }
                     },
                     child:

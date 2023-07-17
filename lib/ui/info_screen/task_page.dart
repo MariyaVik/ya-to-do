@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../common/navigation/router_delegate.dart';
 import '../../common/utils.dart';
 import '../../entities/importance.dart';
 import '../../entities/task.dart';
 import '../../mobx/state.dart';
+import '../common/check_width.dart';
+import 'narrow_version.dart';
+import 'wide_version.dart';
 import 'widgets/info_header.dart';
 import 'widgets/select_deadline.dart';
 import 'widgets/select_importance.dart';
@@ -65,7 +69,6 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     log('ADDTASK [BUILD]');
-
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -74,40 +77,52 @@ class _TaskPageState extends State<TaskPage> {
                 pinned: true,
                 floating: false,
                 delegate: Delegate(maxHeight: 56, minHeight: 56)),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                TaskDescriptionTextField(task: task),
-                const SizedBox(height: 28),
-                Text(AppLocalizations.of(context).importance),
-                SelectImportance(importance: importance, task: task!),
-                SelectDeadline(deadline: deadLine, task: task!),
-                const SizedBox(height: 32),
-              ])),
-            ),
-            SliverList(
-                delegate: SliverChildListDelegate([
-              const Divider(),
-              TextButton(
-                onPressed: widget.id == null
-                    ? null
-                    : () {
-                        Provider.of<AppState>(context, listen: false)
-                            .removeTask(widget.id!);
-                        log('BACK TO HOME');
-                        Navigator.of(context).pop();
-                      },
-                style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.error),
-                child: Row(
-                  children: [
-                    const Icon(Icons.delete),
-                    Text(AppLocalizations.of(context).delete)
-                  ],
-                ),
-              )
-            ])),
+            CurrentScreen.isMobile(context)
+                ? SliverToBoxAdapter(
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      double width = constraints.constrainWidth();
+                      return width > 500
+                          ? WideVersion(
+                              deadline: deadLine,
+                              id: widget.id,
+                              importance: importance,
+                              task: task,
+                            )
+                          : NarrowVersion(
+                              deadline: deadLine,
+                              id: widget.id,
+                              importance: importance,
+                              task: task,
+                            );
+                    }),
+                  )
+                : SliverToBoxAdapter(
+                    child: LayoutBuilder(builder: (context, constraints) {
+                      double width = constraints.constrainWidth();
+                      return width > 700
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 64),
+                              child: WideVersion(
+                                deadline: deadLine,
+                                id: widget.id,
+                                importance: importance,
+                                task: task,
+                              ),
+                            )
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 48),
+                              child: NarrowVersion(
+                                deadline: deadLine,
+                                id: widget.id,
+                                importance: importance,
+                                task: task,
+                                isTablet: true,
+                              ),
+                            );
+                    }),
+                  ),
           ],
         ),
       ),
