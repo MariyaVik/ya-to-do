@@ -1,31 +1,24 @@
-# Список дел №3
+# Список дел №4
 
 ### Реализовано
-* Offline режим: при отсутствии интернета изменения сохраняются в локальную базу. Когда интернет появляется, то все изменения отправляются на сервер
+* Тёмная тема
+* Адаптивный дизайн
     <details> 
-    <summary>Пример:</summary>
-        <a href="https://drive.google.com/file/d/1NzPT6ymNocEy2uPafVB-O8dijTRicjoD/view?usp=sharing">Запасная ссылка на диске</a>
-        <p><img src="assets\screenshots\offline-mode.gif" width=240 hight=550></p>
+    <summary>Планшет:</summary>
+        <p><img src="assets\screenshots\tablet_home_h.jpg" width=550 hight=240> <img src="assets\screenshots\tablet_new_h.jpg" width=550 hight=240></p>
+        <p><img src="assets\screenshots\tablet_home_v.jpg" width=240 hight=550> <img src="assets\screenshots\tablet_new_v.jpg" width=240 hight=550></p>
     </details>
-* Работа с данными организована в отдельной сущности
-* State-management - MobX
-* Navigator 2.0
-* Поддержка диплинк
     <details> 
-    <summary>Пример:</summary>
-        <a href="https://drive.google.com/file/d/1rqrnGvHpmy7r6j7w_-sej2QUZcLsQhbZ/view?usp=sharing">Запасная ссылка на диске</a>
-        <p><img src="assets\screenshots\deeplink.gif" width=240 hight=550></p>
+    <summary>Телефон:</summary>
+        <p><img src="assets\screenshots\phone_home_h.jpg" width=600 hight=240> <img src="assets\screenshots\phone_new_h.jpg" width=600 hight=240></p>
+        <p><img src="assets\screenshots\phone_home_v.jpg" width=240 hight=600> <img src="assets\screenshots\phone_new_v.jpg" width=240 hight=600></p>
     </details>
-* Обработка серверных ошибок
-* Интеграционный тест
+* Переключение цвета важности в реальном времени
+* Firebase Crashlytics
+* Текст обрезается по макету
+* Навигация в отдельной сущности
 
-### Перед запуском кода
-Необходимо запустить следующую команду:
-```
-flutter gen-l10n
-```
+### Apk (v4)
+[Ссылка](https://github.com/MariyaVik/ya-to-do/releases/tag/v4)
 
-### Apk (v3)
-[Ссылка](https://github.com/MariyaVik/ya-to-do/releases/tag/v3)
-
-[Запасная ссылка на диске](https://drive.google.com/file/d/12JofARJ2EKigiOzf6iXZZSaKRv9GHe52/view?usp=sharing) 
+[Запасная ссылка на диске](https://drive.google.com/file/d/11PLv0p8-_RlUg3AvZ1qhoFr9Cz5suvur/view?usp=sharing) 

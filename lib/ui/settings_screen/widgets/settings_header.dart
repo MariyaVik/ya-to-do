@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../common/navigation/router_delegate.dart';
 import '../../../common/theme/other_styles.dart';
 
 class SettingsHeader extends StatelessWidget {
@@ -20,7 +22,8 @@ class SettingsHeader extends StatelessWidget {
                 IconButton(
                     onPressed: () {
                       log('BACK TO HOME');
-                      Navigator.of(context).pop();
+                      Provider.of<MyRouterDelegate>(context, listen: false)
+                          .goBack();
                     },
                     icon: const Icon(Icons.close)),
               ],

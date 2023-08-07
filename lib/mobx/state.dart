@@ -4,7 +4,10 @@ import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:ya_to_do/common/theme/theme_dark.dart';
+import 'package:ya_to_do/data/config_repository.dart';
 
+import '../common/theme/theme_light.dart';
 import '../entities/filter.dart';
 import '../entities/importance.dart';
 import '../entities/task.dart';
@@ -19,9 +22,27 @@ class AppState = _AppState with _$AppState;
 abstract class _AppState with Store {
   final Api rep;
   final LocalService db;
-  _AppState(this.rep, this.db) {
+  final ConfigRepository config;
+  _AppState(this.rep, this.db, this.config) {
+    config.init();
+    listenConfig();
     getDeviceId();
     loadAllTodos();
+  }
+
+  @observable
+  String importanceColor = '';
+
+  @action
+  Future<void> listenConfig() async {
+    importanceColor =
+        config.remoteConfig.getString(ConfigFields.importanceColor);
+    config.remoteConfig.onConfigUpdated.listen((event) async {
+      await config.remoteConfig.activate();
+      importanceColor =
+          config.remoteConfig.getString(ConfigFields.importanceColor);
+      log('ЦВЕТ->$importanceColor<-');
+    });
   }
 
   @observable
@@ -31,6 +52,12 @@ abstract class _AppState with Store {
   late bool hasLocalChanges = false;
   @observable
   Locale currentLocale = const Locale('ru');
+
+  @observable
+  ThemeData currentTheme = themeLight;
+
+  @computed
+  bool get isDark => currentTheme == themeDark;
 
   String? deviceId = '';
   int revision = 0;
@@ -143,6 +170,15 @@ abstract class _AppState with Store {
   @action
   changeLocale(Locale newLocale) {
     currentLocale = newLocale;
+  }
+
+  @action
+  changeTheme({required bool isDark}) {
+    if (isDark) {
+      currentTheme = themeDark;
+    } else {
+      currentTheme = themeLight;
+    }
   }
 
   @action

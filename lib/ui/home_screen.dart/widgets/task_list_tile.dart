@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ya_to_do/entities/importance.dart';
@@ -14,11 +15,12 @@ class TaskListTile extends StatelessWidget {
   const TaskListTile({super.key, required this.id});
 
   final String id;
-
+  // final configRepository = ServiceLocator.configRepository;
   @override
   Widget build(BuildContext context) {
     final tasks = Provider.of<AppState>(context).tasks;
     int index = tasks.indexOf(context.getTaskById(id));
+
     return ListTile(
       onTap: () {
         Provider.of<AppState>(context, listen: false).toggleDone(id);
@@ -40,46 +42,53 @@ class TaskListTile extends StatelessWidget {
             Icons.info_outline,
             color: Theme.of(context).colorScheme.tertiary,
           )),
-      title: RichText(
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyMedium,
-          children: [
-            if (tasks[index].importance == Importance.hight)
-              TextSpan(
-                text: '!! ',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
-            if (tasks[index].importance == Importance.low)
-              const WidgetSpan(
-                child: Icon(
-                  Icons.arrow_downward,
-                  size: 20,
+      title: Observer(builder: (context) {
+        final impColor = Provider.of<AppState>(context).importanceColor;
+
+        return RichText(
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          textScaleFactor: MediaQuery.of(context).textScaleFactor,
+          text: TextSpan(
+            style: Theme.of(context).textTheme.bodyMedium,
+            children: [
+              if (tasks[index].importance == Importance.hight)
+                TextSpan(
+                  text: '!! ',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: impColor == ''
+                          ? Theme.of(context).colorScheme.error
+                          : impColor.toColor(),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
                 ),
-              ),
-            // TextSpan(
-            //   text: String.fromCharCodes(Runes('\u{1F853} ')),
-            //   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            //       color: Theme.of(context).colorScheme.shadow,
-            //       fontWeight: FontWeight.bold,
-            //       fontSize: 18),
-            // ),
-            TextSpan(
-                text: tasks[index].text,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    decoration:
-                        tasks[index].isDone ? TextDecoration.lineThrough : null,
-                    color: tasks[index].isDone
-                        ? Theme.of(context).colorScheme.tertiary
-                        : null)),
-          ],
-        ),
-      ),
+              if (tasks[index].importance == Importance.low)
+                const WidgetSpan(
+                  child: Icon(
+                    Icons.arrow_downward,
+                    size: 20,
+                  ),
+                ),
+              // TextSpan(
+              //   text: String.fromCharCodes(Runes('\u{1F853} ')),
+              //   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              //       color: Theme.of(context).colorScheme.shadow,
+              //       fontWeight: FontWeight.bold,
+              //       fontSize: 18),
+              // ),
+              TextSpan(
+                  text: tasks[index].text,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      decoration: tasks[index].isDone
+                          ? TextDecoration.lineThrough
+                          : null,
+                      color: tasks[index].isDone
+                          ? Theme.of(context).colorScheme.tertiary
+                          : null)),
+            ],
+          ),
+        );
+      }),
       subtitle: tasks[index].deadline == null
           ? null
           : Text(
